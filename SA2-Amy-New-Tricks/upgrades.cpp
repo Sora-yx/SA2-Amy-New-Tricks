@@ -1,7 +1,28 @@
 #include "pch.h"
 
 static Trampoline* Amy_Callback_t;
-DataPointer(NJS_MATRIX, AmyRightHandMatrix, 0x1A51A3C);
+static NJS_MATRIX AmyHeadMatrix;
+
+
+NJS_MATRIX AmyHammerMatrix;
+
+void Amy_Callback_r(NJS_OBJECT* model) {
+
+	if (model == CharacterModels[403].Model) {
+		memcpy(&AmyHeadMatrix, _nj_current_matrix_ptr_, 0x30u);
+	}
+
+
+	NJS_OBJECT* hammer = CharacterModels[506].Model;
+
+	if (hammer) {
+		memcpy(&AmyHammerMatrix, _nj_current_matrix_ptr_, 0x30u);
+	}
+
+	FunctionPointer(void, original, (NJS_OBJECT * model), Amy_Callback_t->Target());
+	original(model);
+}
+
 
 void DisplayUpgrade() {
 
@@ -23,11 +44,23 @@ void DisplayUpgrade() {
 		}
 	}
 
+	NJS_OBJECT* warrior = CharacterModels[500].Model;
+
+	if (warrior) {
+		njPushMatrixEx();
+		memcpy(_nj_current_matrix_ptr_, &AmyHeadMatrix, 0x30u);
+		njTranslate(nullptr, -0.5f, 0.1f, 0.0f);
+		DrawObject(warrior);
+		njPopMatrixEx();
+	}
+
+
 	njPushMatrixEx();
 }
 
 void Upgrades_Init() {
 
 
+	Amy_Callback_t = new Trampoline((int)0x71F040, (int)0x71F049, Amy_Callback_r);
 	WriteCall((void*)0x720698, DisplayUpgrade);
 }

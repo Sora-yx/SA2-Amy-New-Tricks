@@ -20,5 +20,6 @@ void SetNewAnimList(int player);
 signed int AmyCheckHammerAttack(EntityData1* data1, CharObj2Base* co2);
 void DoAmyHammerAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base* co2, EntityData2* data2);
 void Upgrades_Init();
+void njGetTranslation(NJS_MATRIX_PTR matrix, NJS_VECTOR* out);
 
 #define STATUS_FLOOR (Status_Ground | Status_OnObjectColli)

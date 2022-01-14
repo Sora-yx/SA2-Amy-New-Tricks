@@ -187,3 +187,15 @@ bool CheckControl(int id)
 
 	return GameMode != GameMode_Event && ControllerEnabled[id] == 1;
 }
+
+void njGetTranslation(NJS_MATRIX_PTR matrix, NJS_VECTOR* out)
+{
+	if (!matrix)
+	{
+		matrix = CUR_MATRIX;
+	}
+
+	out->x = matrix[3];
+	out->y = matrix[7];
+	out->z = matrix[11];
+}

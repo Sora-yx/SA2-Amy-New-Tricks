@@ -138,3 +138,5 @@ static inline void VibeThing(int a1, signed int a2, int a3, signed int a4)
 		add esp, 4 // int a4
 	}
 }
+
+DataPointer(NJS_MATRIX, AmyRightHandMatrix, 0x1A51A3C);

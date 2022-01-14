@@ -23,6 +23,68 @@ NJS_TEXNAME AmyEff_Tex[4]{};
 NJS_TEXLIST AmyEff_TEXLIST = { arrayptrandlength(AmyEff_Tex, Uint32) };
 
 ModelInfo* WaveMdl = nullptr;
+extern NJS_MATRIX AmyHammerMatrix;
+
+
+void AmySetAttackColli(CharObj2Base* a1, EntityData1* data)
+{
+	CollisionInfo* ColInfo; // eax
+	CollisionData* v4; // ebp
+	char v5; // cl
+	char v6; // al
+	Vector3 a3; // [esp+4h] [ebp-18h] BYREF
+	Vector3 a2a; // [esp+10h] [ebp-Ch] BYREF
+
+	ColInfo = data->Collision;
+	if (ColInfo)
+	{
+		v4 = ColInfo->CollisionArray;
+		v4[1].attr |= 0x10u;
+		data->Status &= 0xFBu;
+		if (a1->Powerups >= 0)
+		{
+			v5 = 0;
+			v6 = 0;
+		}
+		else
+		{
+			v5 = 3;
+			v6 = 3;
+		}
+		v4->damage = v5 & 3 | v4->damage & 0xF0 | (4 * (v6 & 3));
+	}
+	switch (a1->AnimInfo.Current)
+	{
+	case HammerAttackAnim:
+	case HammerSpinAnim:
+	case HammerJumpAnim:
+	case HammerAirAnim:
+
+		data->Collision->CollisionArray->damage &= 0xFCu;
+		data->Collision->CollisionArray->damage |= 0xCu;
+		data->Collision->CollisionArray[1].attr &= 0xFFFFFFEF;
+		data->Collision->CollisionArray[1].param1 = 9.0;
+
+
+		njPushMatrixEx();
+		memcpy(CUR_MATRIX, &AmyHammerMatrix, 0x30u);
+		njTranslateV(CUR_MATRIX, &data->Collision->CollisionArray->center);
+		njGetTranslation(CUR_MATRIX, &a3);
+
+
+		njRotateZ_(CUR_MATRIX, (unsigned __int16)data->Rotation.z);
+		njRotateX_(CUR_MATRIX, (unsigned __int16)data->Rotation.x);
+		njRotateY_(CUR_MATRIX, (unsigned __int16)(0x8000 - data->Rotation.y));
+
+		data->Collision->CollisionArray[1].center = a3;
+		njPopMatrixEx();
+		AmyEffectPutSpdDwnHeart(&a3);
+
+		break;
+	default:
+		return;
+	}
+}
 
 static void AmyDoubleJump(EntityData1* data, CharObj2Base* co2)
 {
@@ -262,6 +324,9 @@ static void Amy_Exec_r(ObjectMaster* tsk)
 	EntityData1* data = MainCharObj1[pnum];
 	EntityData2* mwp = MainCharData2[pnum];
 
+	if (co2->CharID2 != Characters_Amy)
+		return;
+
 	//Amy_NewActions(sonicCO2, data, mwp, co2);
 
 	switch (data->Action)
@@ -294,6 +359,8 @@ static void Amy_Exec_r(ObjectMaster* tsk)
 		PResetPosition(data, mwp, co2);
 		break;
 	}
+
+	AmySetAttackColli(co2, data);
 }
 
 void Load_AmyEffText() {
@@ -323,7 +390,7 @@ void LoadCharacter_r() {
 void Amy_AbilitiesConfig(const IniFile* config, const IniFile* physics) {
 
 	hammerJump = config->getBool("Abilities", "hammerJump", true);
-	EnableDoubleJump = config->getBool( "Abilities", "EnableDoubleJump", true);
+	EnableDoubleJump = config->getBool("Abilities", "EnableDoubleJump", true);
 	MovingGroundSpin = config->getBool("Abilities", "EnableMovingSpin", true);
 	HammerPropButton = (Buttons)config->getInt("Abilities", "HammerPropButton", HammerPropButton);
 

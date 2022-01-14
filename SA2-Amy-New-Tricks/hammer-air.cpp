@@ -1,12 +1,13 @@
 #include "pch.h"
 
+
 int AmyAirAttack_Check(CharObj2Base* a1, EntityData1* a2)
 {
     if (Action_Pressed[a1->PlayerNum] == 0)
     {
         return 0;
     }
-
+ 
     a2->Action = HammerAir;
     a1->AnimInfo.Next = HammerAirAnim;
     PlayCustomSoundVolume(Voice_AmyHammerAir, 1);
