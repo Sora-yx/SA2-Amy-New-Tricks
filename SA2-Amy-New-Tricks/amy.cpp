@@ -268,7 +268,10 @@ static void Amy_Exec_r(ObjectMaster* tsk)
 	{
 	case HammerJump:
 		PResetAngle(data, co2);
-		PGetAccelerationAir(data, co2, mwp);
+
+		if (!PResetAccelerationAir(data, mwp, co2)) {
+			PGetAccelerationAir(data, co2, mwp);
+		}
 		PGetSpeed(data, co2, mwp);
 		PSetPosition(data, mwp, co2);
 		PResetPosition(data, mwp, co2);
