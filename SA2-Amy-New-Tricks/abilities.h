@@ -9,5 +9,6 @@ void __cdecl AmyEffectPutSpdDwnHeart(NJS_POINT3* pos);
 void __cdecl AmyPutHammerWave(ObjectMaster* obj);
 int AmySpinAttack_Check(CharObj2Base* a1, EntityData1* a2);
 void DoAmySpinAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base* co2, EntityData2* data2);
+void AmySetAttackColli(CharObj2Base* a1, EntityData1* data);
 
 extern bool BlockDoubleJump[MaxPlayers];

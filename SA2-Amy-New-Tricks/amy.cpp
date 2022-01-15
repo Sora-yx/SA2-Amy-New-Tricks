@@ -101,10 +101,10 @@ static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityDat
 
 void __cdecl Amy_runsActions_r(EntityData1* data1, EntityData2* data2, CharObj2Base* co2, SonicCharObj2* SonicCO2)
 {
+	Amy_NewActions(SonicCO2, data1, data2, co2);
+
 	FunctionPointer(void, original, (EntityData1 * data1, EntityData2 * data2, CharObj2Base * co2, SonicCharObj2 * SonicCO2), Amy_runsActions_t->Target());
 	original(data1, data2, co2, SonicCO2);
-
-	Amy_NewActions(SonicCO2, data1, data2, co2);
 }
 
 void Amy_NewMoves_Main(ObjectMaster* tsk) {
@@ -117,7 +117,6 @@ void Amy_NewMoves_Main(ObjectMaster* tsk) {
 
 	if (co2->CharID2 != Characters_Amy)
 		return;
-
 
 	int curAnim = co2->AnimInfo.Current;
 
@@ -132,7 +131,7 @@ void Amy_NewMoves_Main(ObjectMaster* tsk) {
 		break;
 	case HammerAir:
 		PResetAngle(data, co2);
-		if (!PResetAccelerationAir(data, mwp, co2))
+		if (!PResetAccelerationAir(mwp, data, co2))
 		{
 			PGetAccelerationAir(data, co2, mwp);
 		}
@@ -143,7 +142,7 @@ void Amy_NewMoves_Main(ObjectMaster* tsk) {
 	case HammerJump:
 		PResetAngle(data, co2);
 
-		if (!PResetAccelerationAir(data, mwp, co2)) {
+		if (!PResetAccelerationAir(mwp, data, co2)) {
 			PGetAccelerationAir(data, co2, mwp);
 		}
 		PGetSpeed(data, co2, mwp);
@@ -161,7 +160,7 @@ void Amy_NewMoves_Main(ObjectMaster* tsk) {
 		break;
 	}
 
-	//AmySetAttackColli(co2, data);
+	AmySetAttackColli(co2, data);
 }
 
 static void Amy_Exec_r(ObjectMaster* tsk)

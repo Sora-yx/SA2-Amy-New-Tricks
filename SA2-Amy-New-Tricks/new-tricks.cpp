@@ -24,50 +24,52 @@ void AmySetAttackColli(CharObj2Base* a1, EntityData1* data)
 	Vector3 a3; // [esp+4h] [ebp-18h] BYREF
 	Vector3 a2a; // [esp+10h] [ebp-Ch] BYREF
 
-	ColInfo = data->Collision;
-	if (ColInfo)
-	{
-		v4 = ColInfo->CollisionArray;
-		v4[1].attr |= 0x10u;
-		data->Status &= 0xFBu;
-		if (a1->Powerups >= 0)
-		{
-			v5 = 0;
-			v6 = 0;
-		}
-		else
-		{
-			v5 = 3;
-			v6 = 3;
-		}
-		v4->damage = v5 & 3 | v4->damage & 0xF0 | (4 * (v6 & 3));
-	}
 	switch (a1->AnimInfo.Current)
 	{
 	case HammerAttackAnim:
 	case HammerSpinAnim:
-	case HammerJumpAnim:
 	case HammerAirAnim:
+
+
+		ColInfo = data->Collision;
+		if (ColInfo)
+		{
+			v4 = ColInfo->CollisionArray;
+			v4[1].attr |= 0x10u;
+			data->Status &= 0xFBu;
+			if (a1->Powerups >= 0)
+			{
+				v5 = 0;
+				v6 = 0;
+			}
+			else
+			{
+				v5 = 3;
+				v6 = 3;
+			}
+			v4->damage = v5 & 3 | v4->damage & 0xF0 | (4 * (v6 & 3));
+		}
 
 		data->Collision->CollisionArray->damage &= 0xFCu;
 		data->Collision->CollisionArray->damage |= 0xCu;
 		data->Collision->CollisionArray[1].attr &= 0xFFFFFFEF;
 		data->Collision->CollisionArray[1].param1 = 9.0;
 
-
 		njPushMatrixEx();
-		memcpy(CUR_MATRIX, &AmyHammerMatrix, 0x30u);
-		njTranslateV(CUR_MATRIX, &data->Collision->CollisionArray->center);
-		njGetTranslation(CUR_MATRIX, &a3);
-
 
 		njRotateZ_(CUR_MATRIX, (unsigned __int16)data->Rotation.z);
 		njRotateX_(CUR_MATRIX, (unsigned __int16)data->Rotation.x);
 		njRotateY_(CUR_MATRIX, (unsigned __int16)(0x8000 - data->Rotation.y));
 
+		memcpy(_nj_current_matrix_ptr_, AmyHammerMatrix, 0x30u);
+		a2a.x = 0;
+		a2a.y = 0;
+		a2a.z = 0;
+		njTranslateV(CUR_MATRIX, &a3);
+	
 		data->Collision->CollisionArray[1].center = a3;
-		njPopMatrixEx();
 		AmyEffectPutSpdDwnHeart(&a3);
+		njPopMatrixEx();
 
 		break;
 	default:

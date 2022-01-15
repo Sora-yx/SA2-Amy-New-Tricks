@@ -64,22 +64,7 @@ static inline signed int Sonic_CheckNextAction(SonicCharObj2* a1, EntityData1* a
 	return result;
 }
 
-//signed int __usercall PResetAccelerationAir(double result@<st0>, EntityData1* data, EntityData2* a2, CharObj2Base* a4)
-static const void* const PResetAccelerationAirPtr = (void*)0x46E630;
-static inline int PResetAccelerationAir(EntityData1* data, EntityData2* data2, CharObj2Base* co2)
-{
-	int result;
-	__asm
-	{
-		push[co2]
-		push[data2]
-		push[data]
-		call PResetAccelerationAirPtr
-		add esp, 12
-		mov result, eax
-	}
-	return result;
-}
+FunctionPointer(BOOL, PResetAccelerationAir, (EntityData2* a1, EntityData1* a2, CharObj2Base* a3), 0x46E630);
 
 static const void* const njCalcPointPtr_ = (void*)0x426CC0;
 static inline void njCalcPoint_(float* matrix, NJS_VECTOR* v, NJS_VECTOR* transform, char additive)
