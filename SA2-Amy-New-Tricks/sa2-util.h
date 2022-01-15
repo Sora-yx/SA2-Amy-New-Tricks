@@ -73,9 +73,9 @@ static inline int PResetAccelerationAir(EntityData1* data, EntityData2* data2, C
 	{
 		push[co2]
 		push[data2]
-		mov eax, [data]
+		push[data]
 		call PResetAccelerationAirPtr
-		add esp, 8
+		add esp, 12
 		mov result, eax
 	}
 	return result;
@@ -92,7 +92,7 @@ static inline void njCalcPoint_(float* matrix, NJS_VECTOR* v, NJS_VECTOR* transf
 		mov edx, [v]
 		mov eax, [matrix]
 		call njCalcPointPtr_
-		add esp, 4;
+		add esp, 4
 	}
 }
 

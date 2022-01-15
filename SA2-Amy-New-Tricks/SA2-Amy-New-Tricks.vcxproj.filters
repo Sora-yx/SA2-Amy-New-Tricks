@@ -16,6 +16,9 @@
     <Filter Include="Source Files\abilities">
       <UniqueIdentifier>{6c2d34ef-4fb4-4130-bbae-99f699364794}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\abilities\SA1">
+      <UniqueIdentifier>{23fb53cf-c871-442d-9b67-1d70e1b6b959}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -65,19 +68,25 @@
     <ClCompile Include="sound.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="bird.cpp">
-      <Filter>Source Files\abilities</Filter>
-    </ClCompile>
-    <ClCompile Include="hammer-jump.cpp">
-      <Filter>Source Files\abilities</Filter>
-    </ClCompile>
-    <ClCompile Include="hammer-attack.cpp">
-      <Filter>Source Files\abilities</Filter>
-    </ClCompile>
     <ClCompile Include="upgrades.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="bird.cpp">
+      <Filter>Source Files\abilities\SA1</Filter>
+    </ClCompile>
     <ClCompile Include="hammer-air.cpp">
+      <Filter>Source Files\abilities\SA1</Filter>
+    </ClCompile>
+    <ClCompile Include="hammer-attack.cpp">
+      <Filter>Source Files\abilities\SA1</Filter>
+    </ClCompile>
+    <ClCompile Include="hammer-jump.cpp">
+      <Filter>Source Files\abilities\SA1</Filter>
+    </ClCompile>
+    <ClCompile Include="hammer-spin.cpp">
+      <Filter>Source Files\abilities\SA1</Filter>
+    </ClCompile>
+    <ClCompile Include="new-tricks.cpp">
       <Filter>Source Files\abilities</Filter>
     </ClCompile>
   </ItemGroup>

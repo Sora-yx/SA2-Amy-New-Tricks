@@ -1,7 +1,30 @@
 #include "pch.h"
+#include "abilities.h"
 
 NJS_TEXANIM anim_amy_heart = { 4, 4, 2, 2, 0, 0, 0xFF, 0xFF, 1, 0 };
 NJS_SPRITE sprite_amy_heart = { {0}, 1.0, 1.0, 0, &AmyEff_TEXLIST, &anim_amy_heart };
+
+signed int AmyCheckHammerAttack(EntityData1* data1, CharObj2Base* co2) {
+
+	if ((Controllers[co2->PlayerNum].press & Buttons_Y) == 0 || co2->CharID2 != Characters_Amy || !hammerJump)
+	{
+		return 0;
+	}
+
+	co2->Speed.x = 0.0;
+	co2->Speed.z = 0.0;
+
+	data1->Action = HammerAttack;
+	co2->AnimInfo.Next = HammerAttackAnim;
+	PlayCustomSoundVolume(Voice_AmyHammerAttack, 3);
+
+	if ((data1->Status & 0x20) != 0)
+	{
+		co2->DynColInfo->anaspdv.y = 0.0;
+	}
+
+	return 1;
+}
 
 void __cdecl AmyEffectSpdDwnHeartDisplayer(ObjectMaster* a1)
 {
@@ -103,27 +126,7 @@ void __cdecl AmyEffectPutSpdDwnHeart(NJS_POINT3* pos)
 	}
 }
 
-signed int AmyCheckHammerAttack(EntityData1* data1, CharObj2Base* co2) {
 
-	if ((Controllers[co2->PlayerNum].press & Buttons_Y) == 0 || co2->CharID2 != Characters_Amy || !hammerJump)
-	{
-		return 0;
-	}
-
-	co2->Speed.x = 0.0;
-	co2->Speed.z = 0.0;
-
-	data1->Action = HammerAttack;
-	co2->AnimInfo.Next = HammerAttackAnim;
-	PlayCustomSoundVolume(Voice_AmyHammerAttack, 3);
-
-	if ((data1->Status & 0x20) != 0)
-	{
-		co2->DynColInfo->anaspdv.y = 0.0;
-	}
-
-	return 1;
-}
 
 extern ModelInfo* WaveMdl;
 void __cdecl HammerWaveColorDisplayer(ObjectMaster* a1)
@@ -274,7 +277,7 @@ void __cdecl AmyPutHammerWave(ObjectMaster* obj)
 		//address[1] = (int)AmyEffectHammerWaveColor;
 		if (index < 2u)
 		{
-			v3 = LoadObject(2, "AmmyEffectHammerWave", (void(__cdecl*)(ObjectMaster*))AmyEffectHammerWaveColor, 10);
+			v3 = LoadObject(2, "AmyEffectHammerWave", (void(__cdecl*)(ObjectMaster*))AmyEffectHammerWaveColor, 10);
 			if (v3)
 			{
 				v3->Data1.Entity->Position = data->Position;
@@ -366,9 +369,8 @@ void Do_HammerWaveHeartEffect(EntityData1* data1) {
 	//PlaySound(796, 0, 0, 0);
 	PlayDelayedCustomSound(SE_HammerAttack, 2, 0);
 	VibeThing(0, 15, 0, 6);
-
-
 }
+
 void DoAmyHammerAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base* co2, EntityData2* data2) {
 
 	if (Sonic_CheckNextAction(sonicCO2, data1, data2, co2) || ((data1->Status & STATUS_FLOOR) == 0)) {
@@ -377,27 +379,29 @@ void DoAmyHammerAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base
 
 	short curAnimHammer = co2->AnimInfo.Current;
 
-
-
 	if (curAnimHammer == HammerAttackAnim && co2->AnimInfo.field_10 >= 3.0 && co2->AnimInfo.field_10 < 4.0)
 	{
 		Do_HammerWaveHeartEffect(data1);
 	}
 
 	if (co2->AnimInfo.Current != 0) {
-		if (co2->AnimInfo.Current == HammerSpinSetAnim)
-		{
 
-			data1->Action = HammerSpin;
-		}
-		else
-		{
+		if (co2->AnimInfo.Current == HammerSpinSetAnim) {
 
-			if (co2->AnimInfo.Current > HammerAttackAnim)
-			{
-				AmyCheckHammerAttack(data1, co2);
+			if (AmySpinAttack_Check(co2, data1)) 
+				return;
+			else {
+				data1->Action = Action_None;
+				co2->AnimInfo.Next = 0;
+				return;
 			}
+		}
+		else {
 
+			if (AmyCheckHammerAttack(data1, co2))
+			{
+				return;
+			}
 		}
 	}
 	else {
