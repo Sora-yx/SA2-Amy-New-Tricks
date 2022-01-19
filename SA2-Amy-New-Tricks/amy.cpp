@@ -91,32 +91,6 @@ static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityDat
 		AmyProp_Run(SonicCO2, data, mwp, co2);
 		break;
 	}
-
-	/**switch (data->Action)
-	{
-	case Action_Jump:
-		AmyProp_Check(data, co2);
-		AmyDoubleJump(data, co2);
-		break;
-	case HammerJump:
-		PResetAngle(data, co2);
-		PGetAccelerationAir(data, co2, mwp);
-		PGetSpeed(data, co2, mwp);
-		PSetPosition(data, mwp, co2);
-		PResetPosition(data, mwp, co2);
-		//AmyProp_Check(data, co2);
-		break;
-	case Action_Spring:
-	case Action_Launch:
-		AmyProp_Check(data, co2);
-		break;
-	case HammerSpin:
-		AmyMovingSpin(data, mwp, co2);
-		break;
-	case HammerProp:
-		AmyProp_Run(SonicCO2, data, mwp, co2);
-		break;
-	}*/
 }
 
 void __cdecl Amy_runsActions_r(EntityData1* data1, EntityData2* data2, CharObj2Base* co2, SonicCharObj2* SonicCO2)
@@ -175,12 +149,15 @@ void Amy_NewMoves_Main(ObjectMaster* tsk) {
 		{
 			PGetRotation(data, mwp, co2);
 		}
+		PResetAngle(data, co2);
+		PGetAcceleration(data, mwp, co2);
+		PGetSpeed(data, co2, mwp);
 		PSetPosition(data, mwp, co2);
 		PResetPosition(data, mwp, co2);
 		break;
 	case HammerProp:
-		auto RestoreSpeed = co2->PhysData.RunAccel;
-		co2->PhysData.RunAccel = MovingGroundSpinAccel;
+		auto RestoreSpeed = co2->PhysData.Weight;
+		co2->PhysData.Weight = PropellerGravity;
 
 		PGetRotation(data, mwp, co2);
 		PResetAngle(data, co2);
@@ -189,8 +166,7 @@ void Amy_NewMoves_Main(ObjectMaster* tsk) {
 		PSetPosition(data, mwp, co2);
 		PResetPosition(data, mwp, co2);
 
-
-		co2->PhysData.RunAccel = RestoreSpeed;
+		co2->PhysData.Weight = RestoreSpeed;
 		break;
 	
 	}

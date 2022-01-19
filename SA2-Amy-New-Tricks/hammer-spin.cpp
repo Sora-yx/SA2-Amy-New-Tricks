@@ -21,7 +21,7 @@ int AmySpinAttack_Check(CharObj2Base* a1, EntityData1* a2)
 void DoAmySpinAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base* co2, EntityData2* data2) {
 
     if (Sonic_CheckNextAction(sonicCO2, data1, data2, co2) || (data1->Status & STATUS_FLOOR) == 0) {
-
+        FreeAllCustomSounds();
         return;
     }
 
@@ -29,6 +29,7 @@ void DoAmySpinAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base* 
 
     if (Action_Held[co2->PlayerNum] == 0)
     {
+        FreeAllCustomSounds();
         data1->Action = Action_None;
         co2->AnimInfo.Next = 0;
         return;
@@ -55,6 +56,7 @@ void DoAmySpinAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base* 
             timerDizzy = 0;
             data1->Action = 0; //todo add dizzy stuff
             co2->AnimInfo.Next = 0;
+            FreeAllCustomSounds();
             return;
         }
      

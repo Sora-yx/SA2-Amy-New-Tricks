@@ -4,7 +4,7 @@
 
 static Buttons HammerPropButton = Buttons_X;
 
-static float PropellerGravity = 0.011f;
+float PropellerGravity = 0.011f;
 static float PropellerInitialAccTreshold = 1.0f;
 static float PropellerInitialAcc = 1.01f;
 static float PropellerAirAccTreshold = 7.0f;
@@ -14,6 +14,8 @@ float MovingGroundSpinAccel = 0.025f;
 
 bool BlockDoubleJump[MaxPlayers]{};
 extern NJS_MATRIX AmyHammerMatrix;
+
+int timerWaveProper = 0;
 
 void AmySetAttackColli(CharObj2Base* a1, EntityData1* data)
 {
@@ -99,14 +101,11 @@ void AmyMovingSpin(EntityData1* data, EntityData2* data2, CharObj2Base* co2)
 	{
 		if (HammerPropButton)
 		{
+			timerWaveProper = 0;
 			data->Action = HammerProp;
 			return;
 		}
 	}
-
-
-
-
 }
 
 #pragma region Propeller
@@ -115,7 +114,7 @@ void AmyProp_Run(SonicCharObj2* sonicCO2, EntityData1* data, EntityData2* data2,
 	// If an object overrides the player action, stop
 	if (Sonic_CheckNextAction(sonicCO2, data, data2, co2))
 	{
-		//co2->TailsFlightTime = 0.0f;
+		FreeAllCustomSounds();
 		return;
 	}
 
@@ -124,17 +123,16 @@ void AmyProp_Run(SonicCharObj2* sonicCO2, EntityData1* data, EntityData2* data2,
 	{
 		data->Action = Action_Fall;
 		co2->AnimInfo.Next = 15;
-		//co2->TailsFlightTime = 0.0f;
+		FreeAllCustomSounds();
 		return;
 	}
 
 	// If the player touches the ground, stop
 	if (data->Status & STATUS_FLOOR)
 	{
-		//PlaySound(33, 0, 0, 0);
 		co2->AnimInfo.Next = 0;
 		data->Action = Action_Run;
-		//co2->TailsFlightTime = 0.0f;
+		FreeAllCustomSounds();
 		return;
 	}
 
@@ -156,23 +154,25 @@ void AmyProp_Run(SonicCharObj2* sonicCO2, EntityData1* data, EntityData2* data2,
 		co2->Speed.y -= 0.1f;
 	}
 
-	// Handle physics
+	timerWaveProper++;
 
-	ObjectMaster* wave = LoadObject(2, "AmyWaveEffect", AmyPutHammerWave, LoadObj_Data1);
-	if (wave)
+	if ((timerWaveProper & 7) == 0)
 	{
-		EntityData1* waveData = wave->Data1.Entity;
-		waveData->Position = data->Position;
-		waveData->Position.y = co2->PhysData.Height * 0.5 + waveData->Position.y;
-		waveData->Rotation = data->Rotation;
-		waveData->field_6 = 4;
-		waveData->Index = 0;
+		ObjectMaster* wave = LoadObject(2, "AmyWaveEffect", AmyPutHammerWave, LoadObj_Data1);
+		if (wave)
+		{
+			EntityData1* waveData = wave->Data1.Entity;
+			waveData->Position = data->Position;
+			waveData->Position.y = co2->PhysData.Height * 0.5 + waveData->Position.y;
+			waveData->Rotation = data->Rotation;
+			waveData->field_6 = 4;
+			waveData->Index = 0;
+		}
 	}
 
 
 	// Hammer Spin Animation
 	co2->AnimInfo.Next = HammerSpinAnim;
-
 	// Attack status
 	data->Status |= Status_Attack;
 }
@@ -182,6 +182,7 @@ signed int AmyProp_Check(EntityData1* data, CharObj2Base* co2)
 	if (CheckControl(co2->PlayerNum) && Controllers[co2->PlayerNum].press & HammerPropButton
 		&& !(data->Status & STATUS_FLOOR) && co2->HeldObject == nullptr) //jump time?
 	{
+		timerWaveProper = 0;
 		data->Action = HammerProp;
 
 		if (data->Rotation.x || data->Rotation.z)

@@ -1,6 +1,7 @@
 #pragma once
 
 extern float MovingGroundSpinAccel;
+extern float PropellerGravity;
 
 void DoAmyHammerJump(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base* co2, EntityData2* data2);
 signed int AmyCheckHammerJump(EntityData1* data1, CharObj2Base* co2);

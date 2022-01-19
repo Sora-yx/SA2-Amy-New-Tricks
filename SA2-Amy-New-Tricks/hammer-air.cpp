@@ -15,7 +15,6 @@ int AmyAirAttack_Check(CharObj2Base* a1, EntityData1* a2)
     return 1;
 }
 
-
 void DoAmyAirAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base* co2, EntityData2* data2) {
 
     if (Sonic_CheckNextAction(sonicCO2, data1, data2, co2)) {
