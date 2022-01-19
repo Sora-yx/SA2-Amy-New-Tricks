@@ -10,7 +10,7 @@ static float PropellerInitialAcc = 1.01f;
 static float PropellerAirAccTreshold = 7.0f;
 static float PropellerAirAcc = 1.005f;
 static float DoubleJumpAcc = 1.12f;
-static float MovingGroundSpinAccel = 0.025f;
+float MovingGroundSpinAccel = 0.025f;
 
 bool BlockDoubleJump[MaxPlayers]{};
 extern NJS_MATRIX AmyHammerMatrix;
@@ -77,20 +77,23 @@ void AmySetAttackColli(CharObj2Base* a1, EntityData1* data)
 	}
 }
 
-static void AmyDoubleJump(EntityData1* data, CharObj2Base* co2)
+signed int AmyDoubleJump(EntityData1* data, CharObj2Base* co2)
 {
 	char pnum = co2->PlayerNum;
 
 	if (EnableDoubleJump == true && CheckControl(co2->PlayerNum) && Controllers[pnum].press & Buttons_A && BlockDoubleJump[pnum] == false)
 	{
 		BlockDoubleJump[co2->PlayerNum] = true;
-		co2->Speed.y = DoubleJumpAcc;
+		co2->Speed.y += DoubleJumpAcc;
 		//PlaySound(1286, 0, 0, 0);
-		co2->AnimInfo.Next = 74;
+		co2->AnimInfo.Next = HammerJumpLoopAnim;
+		return 1;
 	}
+
+	return 0;
 }
 
-static void AmyMovingSpin(EntityData1* data, EntityData2* data2, CharObj2Base* co2)
+void AmyMovingSpin(EntityData1* data, EntityData2* data2, CharObj2Base* co2)
 {
 	if (!(data->Status & Status_Ground))
 	{
@@ -101,32 +104,13 @@ static void AmyMovingSpin(EntityData1* data, EntityData2* data2, CharObj2Base* c
 		}
 	}
 
-	auto RestoreSpeed = co2->PhysData.RunAccel;
-	co2->PhysData.RunAccel = MovingGroundSpinAccel;
 
-	if (co2->AnimInfo.Current == HammerSpinAnim)
-	{
-		PGetRotation(data, data2, co2);
-		PResetAngle(data, co2);
-		PGetAcceleration(data, data2, co2);
-		PGetSpeed(data, co2, data2);
-		PSetPosition(data, data2, co2);
-		PResetPosition(data, data2, co2);
-	}
 
-	co2->PhysData.RunAccel = RestoreSpeed;
 
-	if (!(data->Status & Status_Ground))
-	{
-		if (HammerPropButton)
-		{
-			data->Action = HammerProp;
-		}
-	}
 }
 
 #pragma region Propeller
-static void AmyProp_Run(SonicCharObj2* sonicCO2, EntityData1* data, EntityData2* data2, CharObj2Base* co2)
+void AmyProp_Run(SonicCharObj2* sonicCO2, EntityData1* data, EntityData2* data2, CharObj2Base* co2)
 {
 	// If an object overrides the player action, stop
 	if (Sonic_CheckNextAction(sonicCO2, data, data2, co2))
@@ -173,17 +157,18 @@ static void AmyProp_Run(SonicCharObj2* sonicCO2, EntityData1* data, EntityData2*
 	}
 
 	// Handle physics
-	auto RestoreGravity = co2->PhysData.Weight;
-	co2->PhysData.Weight = PropellerGravity;
 
-	PGetRotation(data, data2, co2);
-	PResetAngle(data, co2);
-	PGetAcceleration(data, data2, co2);
-	PGetSpeed(data, co2, data2);
-	PSetPosition(data, data2, co2);
-	PResetPosition(data, data2, co2);
+	ObjectMaster* wave = LoadObject(2, "AmyWaveEffect", AmyPutHammerWave, LoadObj_Data1);
+	if (wave)
+	{
+		EntityData1* waveData = wave->Data1.Entity;
+		waveData->Position = data->Position;
+		waveData->Position.y = co2->PhysData.Height * 0.5 + waveData->Position.y;
+		waveData->Rotation = data->Rotation;
+		waveData->field_6 = 4;
+		waveData->Index = 0;
+	}
 
-	co2->PhysData.Weight = RestoreGravity;
 
 	// Hammer Spin Animation
 	co2->AnimInfo.Next = HammerSpinAnim;
@@ -192,7 +177,7 @@ static void AmyProp_Run(SonicCharObj2* sonicCO2, EntityData1* data, EntityData2*
 	data->Status |= Status_Attack;
 }
 
-static inline void AmyProp_Check(EntityData1* data, CharObj2Base* co2)
+signed int AmyProp_Check(EntityData1* data, CharObj2Base* co2)
 {
 	if (CheckControl(co2->PlayerNum) && Controllers[co2->PlayerNum].press & HammerPropButton
 		&& !(data->Status & STATUS_FLOOR) && co2->HeldObject == nullptr) //jump time?
@@ -208,7 +193,10 @@ static inline void AmyProp_Check(EntityData1* data, CharObj2Base* co2)
 		data->Rotation.z = GravityAngle_Z;
 
 		//PlaySound(1279, 0, 0, 0);
+		return 1;
 	}
+
+	return 0;
 }
 #pragma endregion
 

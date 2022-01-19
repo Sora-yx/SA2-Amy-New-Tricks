@@ -51,8 +51,21 @@ static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityDat
 				return;
 		}
 		break;
+	case Action_Spring:
+	case Action_Launch:
+
+		if (AmyProp_Check(data, co2))
+			return;
+
+		break;
 	case Action_Jump:
 	case Action_Fall:
+
+		if (AmyDoubleJump(data, co2))
+			return;
+
+		if (AmyProp_Check(data, co2))
+			return;
 
 		if (AmyAirAttack_Check(co2, data))
 			return;
@@ -65,10 +78,17 @@ static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityDat
 		DoAmyAirAttack(SonicCO2, data, co2, mwp);
 		break;
 	case HammerJump:
+		if (AmyProp_Check(data, co2))
+			return;
+
 		DoAmyHammerJump(SonicCO2, data, co2, mwp);
 		break;
 	case HammerSpin:
 		DoAmySpinAttack(SonicCO2, data, co2, mwp);
+		AmyMovingSpin(data, mwp, co2);
+		break;
+	case HammerProp:
+		AmyProp_Run(SonicCO2, data, mwp, co2);
 		break;
 	}
 
@@ -158,6 +178,21 @@ void Amy_NewMoves_Main(ObjectMaster* tsk) {
 		PSetPosition(data, mwp, co2);
 		PResetPosition(data, mwp, co2);
 		break;
+	case HammerProp:
+		auto RestoreSpeed = co2->PhysData.RunAccel;
+		co2->PhysData.RunAccel = MovingGroundSpinAccel;
+
+		PGetRotation(data, mwp, co2);
+		PResetAngle(data, co2);
+		PGetAcceleration(data, mwp, co2);
+		PGetSpeed(data, co2, mwp);
+		PSetPosition(data, mwp, co2);
+		PResetPosition(data, mwp, co2);
+
+
+		co2->PhysData.RunAccel = RestoreSpeed;
+		break;
+	
 	}
 
 	AmySetAttackColli(co2, data);

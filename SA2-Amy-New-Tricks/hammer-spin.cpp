@@ -3,12 +3,8 @@
 
 int timerDizzy = 0;
 
-//disabled for now
-
 int AmySpinAttack_Check(CharObj2Base* a1, EntityData1* a2)
 {
-
-    return 0;
 
     if (Action_Held[a1->PlayerNum] == 0)
     {

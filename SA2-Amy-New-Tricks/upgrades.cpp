@@ -31,6 +31,10 @@ void DisplayUpgrade() {
 		if (MainCharObj2[pnum]->Speed.x >= 2.0 && MainCharObj1[pnum]->Action < 3 || curAnim == HammerJumpStartAnim || curAnim >= HammerAttackAnim && curAnim <= HammerSpinAnim) {
 			njPushMatrixEx();
 			memcpy(CUR_MATRIX, &AmyRightHandMatrix, 0x30u);
+
+			if (curAnim == HammerSpinSetAnim || curAnim == HammerSpinAnim)
+				njRotateZ_(CUR_MATRIX, MainCharObj1[pnum]->Rotation.z + 0x3000);
+
 			njTranslate(nullptr, -0.5f, 0.1f, 0.0f);
 			DrawObject(hammer);
 			njPopMatrixEx();
