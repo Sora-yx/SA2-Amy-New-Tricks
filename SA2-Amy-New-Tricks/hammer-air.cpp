@@ -1,15 +1,15 @@
 #include "pch.h"
 
 
-int AmyAirAttack_Check(CharObj2Base* a1, EntityData1* a2)
+int AmyAirAttack_Check(CharObj2Base* co2, EntityData1* data)
 {
-    if (Action_Pressed[a1->PlayerNum] == 0)
+    if ((Controllers[co2->PlayerNum].press & HammerAirButton) == 0 || co2->CharID2 != Characters_Amy || !HammerAirButton)
     {
         return 0;
     }
  
-    a2->Action = HammerAir;
-    a1->AnimInfo.Next = HammerAirAnim;
+    data->Action = HammerAir;
+    co2->AnimInfo.Next = HammerAirAnim;
     PlayCustomSoundVolume(Voice_AmyHammerAir, 1);
     VibeThing(0, 15, 0, 6);
     return 1;
@@ -33,6 +33,7 @@ void DoAmyAirAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base* c
         data1->Rotation.x = data2->Forward.x;
         data1->Rotation.z = data2->Forward.z;
         data1->Action = (char)Action_None;
+        data1->Status &= ~Status_Attack;
         co2->AnimInfo.Next = 1;
     }
 

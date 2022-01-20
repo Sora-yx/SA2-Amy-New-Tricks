@@ -3,16 +3,16 @@
 
 int timerDizzy = 0;
 
-int AmySpinAttack_Check(CharObj2Base* a1, EntityData1* a2)
+int AmySpinAttack_Check(CharObj2Base* co2, EntityData1* data)
 {
 
-    if (Action_Held[a1->PlayerNum] == 0)
+    if ((Controllers[co2->PlayerNum].on & HammerPropButton) == 0 || co2->CharID2 != Characters_Amy || !HammerPropButton)
     {
         return 0;
     }
 
-    a2->Action = HammerSpin;
-    a1->AnimInfo.Next = HammerSpinSetAnim;
+    data->Action = HammerSpin;
+    co2->AnimInfo.Next = HammerSpinSetAnim;
     VibeThing(0, 15, 0, 6);
     return 1;
 }
@@ -27,9 +27,10 @@ void DoAmySpinAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base* 
 
     int curAnim = co2->AnimInfo.Current;
 
-    if (Action_Held[co2->PlayerNum] == 0)
+    if ((Controllers[co2->PlayerNum].on & HammerPropButton) == 0)
     {
         FreeAllCustomSounds();
+        data1->Status &= ~Status_Attack;
         data1->Action = Action_None;
         co2->AnimInfo.Next = 0;
         return;
@@ -50,6 +51,7 @@ void DoAmySpinAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base* 
         timerDizzy++;
         if (timerDizzy > 300.0)
         {
+            data1->Status &= ~Status_Attack;
             co2->Speed.z = 0.0;
             co2->Speed.y = 0.0;
             co2->Speed.x = 0.0;

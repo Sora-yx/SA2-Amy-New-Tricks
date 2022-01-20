@@ -6,9 +6,11 @@ void ReadConfig(const char* path);
 extern int bird;
 extern int bird;
 extern bool grunt;
-extern bool hammerJump;
-extern bool EnableDoubleJump;
-extern bool MovingGroundSpin;
+
+extern Buttons HammerPropButton;
+extern Buttons HammerAttackButton;
+extern Buttons HammerAirButton;
+extern Buttons HammerJumpButton;
 
 enum AmyAction {
 	HammerAttack = 95,

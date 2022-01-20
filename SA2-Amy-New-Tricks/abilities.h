@@ -15,7 +15,6 @@ void DoAmySpinAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base* 
 void AmySetAttackColli(SonicCharObj2* sonicCO2, CharObj2Base* a1, EntityData1* data);
 signed int AmyProp_Check(EntityData1* data, CharObj2Base* co2);
 void AmyProp_Run(SonicCharObj2* sonicCO2, EntityData1* data, EntityData2* data2, CharObj2Base* co2);
-signed int AmyDoubleJump(EntityData1* data, CharObj2Base* co2);
 void AmyMovingSpin(EntityData1* data, EntityData2* data2, CharObj2Base* co2);
 
 extern bool BlockDoubleJump[MaxPlayers];

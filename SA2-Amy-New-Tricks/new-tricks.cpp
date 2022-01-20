@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "abilities.h"
 
-
-static Buttons HammerPropButton = Buttons_X;
+Buttons HammerPropButton = Buttons_X;
+Buttons HammerAttackButton = (Buttons)0;
+Buttons HammerAirButton = Buttons_B;
+Buttons HammerJumpButton = Buttons_B;
 
 float PropellerGravity = 0.011f;
 static float PropellerInitialAccTreshold = 1.0f;
@@ -32,7 +34,6 @@ void AmySetAttackColli(SonicCharObj2* sonicCO2, CharObj2Base* a1, EntityData1* d
 	case HammerSpinAnim:
 	case HammerAirAnim:
 
-
 		ColInfo = data->Collision;
 		if (ColInfo)
 		{
@@ -57,22 +58,20 @@ void AmySetAttackColli(SonicCharObj2* sonicCO2, CharObj2Base* a1, EntityData1* d
 		njGetTranslation(CUR_MATRIX, &a2a);
 		njTranslate(0, -0.5f, 0.1f, 0.0f);
 
-
 		a3.x = sonicCO2->righthand_pos.x + sonicCO2->righthand_vec0.x * a2a.x;
 		a3.y = sonicCO2->righthand_pos.y + sonicCO2->righthand_vec0.y * a2a.y;
-		a3.z = sonicCO2->righthand_pos.z + sonicCO2->righthand_vec0.z * a2a.z;
-		
+		a3.z = sonicCO2->righthand_pos.z + sonicCO2->righthand_vec0.z * a2a.z;	
+
 		data->Collision->CollisionArray->damage &= 0xFCu;
 		data->Collision->CollisionArray->damage |= 0xCu;
 		data->Collision->CollisionArray[1].attr &= 0xFFFFFFEF;
 		data->Collision->CollisionArray[1].param1 = 9.0;
 
-
 		njRotateZ_(CUR_MATRIX, (unsigned __int16)data->Rotation.z);
 		njRotateX_(CUR_MATRIX, (unsigned __int16)data->Rotation.x);
 		njRotateY_(CUR_MATRIX, (unsigned __int16)(0x8000 - data->Rotation.y));
 
-
+		data->Status |= Status_Attack;
 		data->Collision->CollisionArray[1].center = a3;
 		AmyEffectPutSpdDwnHeart(&a3);
 		Sonic_Afterimage(data, a1, sonicCO2);
@@ -84,21 +83,6 @@ void AmySetAttackColli(SonicCharObj2* sonicCO2, CharObj2Base* a1, EntityData1* d
 	}
 }
 
-signed int AmyDoubleJump(EntityData1* data, CharObj2Base* co2)
-{
-	char pnum = co2->PlayerNum;
-
-	if (EnableDoubleJump == true && CheckControl(co2->PlayerNum) && Controllers[pnum].press & Buttons_A && BlockDoubleJump[pnum] == false)
-	{
-		BlockDoubleJump[co2->PlayerNum] = true;
-		co2->Speed.y += DoubleJumpAcc;
-		//PlaySound(1286, 0, 0, 0);
-		co2->AnimInfo.Next = HammerJumpLoopAnim;
-		return 1;
-	}
-
-	return 0;
-}
 
 void AmyMovingSpin(EntityData1* data, EntityData2* data2, CharObj2Base* co2)
 {
@@ -209,9 +193,9 @@ signed int AmyProp_Check(EntityData1* data, CharObj2Base* co2)
 
 void Amy_AbilitiesConfig(const IniFile* config, const IniFile* physics) {
 
-	hammerJump = config->getBool("Abilities", "hammerJump", true);
-	EnableDoubleJump = config->getBool("Abilities", "EnableDoubleJump", true);
-	MovingGroundSpin = config->getBool("Abilities", "EnableMovingSpin", true);
+	HammerJumpButton = (Buttons)config->getInt("Abilities", "HammerJumpButton", HammerJumpButton);
+	HammerAttackButton = (Buttons)config->getInt("Abilities", "HammerAttackButton", HammerAttackButton);
+	HammerAirButton = (Buttons)config->getInt("Abilities", "HammerAirButton", HammerAirButton);
 	HammerPropButton = (Buttons)config->getInt("Abilities", "HammerPropButton", HammerPropButton);
 
 	auto physgrp = physics->getGroup("Amy");

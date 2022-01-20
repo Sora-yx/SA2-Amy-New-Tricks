@@ -6,7 +6,7 @@ NJS_SPRITE sprite_amy_heart = { {0}, 1.0, 1.0, 0, &AmyEff_TEXLIST, &anim_amy_hea
 
 signed int AmyCheckHammerAttack(EntityData1* data1, CharObj2Base* co2) {
 
-	if ((Controllers[co2->PlayerNum].press & Buttons_Y) == 0 || co2->CharID2 != Characters_Amy || !hammerJump)
+	if ((Controllers[co2->PlayerNum].press & HammerAttackButton) == 0 || co2->CharID2 != Characters_Amy || !HammerAttackButton)
 	{
 		return 0;
 	}
@@ -221,8 +221,6 @@ void __cdecl AmyEffectFallHeartDisplayer(ObjectMaster* a1)
 
 void __cdecl AmyEffectFallHeart(ObjectMaster* a1)
 {
-
-
 	double sclY; // st7
 	Angle rotZ; // eax
 	Angle rotX; // esi
@@ -294,11 +292,11 @@ void __cdecl AmyPutHammerWave(ObjectMaster* obj)
 
 void __cdecl AmyEffectPutFallHeart(NJS_VECTOR a1, int rotX, int rotZ)
 {
-	int i; // esi
-	ObjectMaster* obj; // eax
-	EntityData1* data; // ecx
-	Vector3 a3; // [esp+0h] [ebp-18h] BYREF
-	Vector3 pos; // [esp+Ch] [ebp-Ch] BYREF
+	int i; 
+	ObjectMaster* obj; 
+	EntityData1* data; 
+	Vector3 a3; 
+	Vector3 pos;
 
 	njPushMatrix(_nj_unit_matrix_);
 	if (rotZ)
@@ -366,7 +364,6 @@ void Do_HammerWaveHeartEffect(EntityData1* data1) {
 		AmyEffectPutFallHeart(hammerWave->Data1.Entity->Position, data1->Rotation.x, data1->Rotation.z);
 	}
 
-	//PlaySound(796, 0, 0, 0);
 	PlayDelayedCustomSound(SE_HammerAttack, 2, 0);
 	VibeThing(0, 15, 0, 6);
 }
@@ -391,6 +388,7 @@ void DoAmyHammerAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base
 			if (AmySpinAttack_Check(co2, data1)) 
 				return;
 			else {
+				data1->Status &= ~Status_Attack;
 				data1->Action = Action_None;
 				co2->AnimInfo.Next = 0;
 				return;
@@ -405,6 +403,7 @@ void DoAmyHammerAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base
 		}
 	}
 	else {
+		data1->Status &= ~Status_Attack;
 		data1->Action = Action_None;
 		co2->AnimInfo.Next = 0;
 	}

@@ -1,7 +1,5 @@
 #include "pch.h"
 
-
-
 void njCnkAction(NJS_ACTION* action, float frame)
 {
 	*(int*)0x25EFE54 = 0x25EFE60;

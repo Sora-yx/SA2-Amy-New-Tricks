@@ -21,13 +21,6 @@ static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityDat
 	if (co2->CharID2 != Characters_Amy)
 		return;
 
-	if (EnableDoubleJump == true && data->Status & Status_Ground)
-	{
-		BlockDoubleJump[co2->PlayerNum] = false; // can double jump
-	}
-
-	if (co2->CharID2 != Characters_Amy)
-		return;
 
 	switch (data->Action)
 	{
@@ -61,8 +54,6 @@ static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityDat
 	case Action_Jump:
 	case Action_Fall:
 
-		if (AmyDoubleJump(data, co2))
-			return;
 
 		if (AmyProp_Check(data, co2))
 			return;

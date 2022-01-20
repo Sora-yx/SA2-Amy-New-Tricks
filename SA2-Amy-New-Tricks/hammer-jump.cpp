@@ -3,10 +3,11 @@
 
 signed int AmyCheckHammerJump(EntityData1* data1, CharObj2Base* co2) {
 
-	if ((Controllers[co2->PlayerNum].press & Buttons_B) == 0 || co2->CharID2 != Characters_Amy || !hammerJump)
+	if ((Controllers[co2->PlayerNum].press & HammerJumpButton) == 0 || co2->CharID2 != Characters_Amy || !HammerJumpButton)
 	{
 		return 0;
 	}
+
 	data1->Action = HammerJump;
 	co2->AnimInfo.Next = HammerJumpStartAnim;
 	PlayCustomSoundVolume(Voice_AmyHammerJump, 3);

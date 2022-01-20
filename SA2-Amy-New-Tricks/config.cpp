@@ -2,9 +2,7 @@
 
 int bird = flicky;
 bool grunt = false;
-bool hammerJump = true;
-bool EnableDoubleJump = true;
-bool MovingGroundSpin = true;
+
 
 void ReadConfig(const char* path) {
 
