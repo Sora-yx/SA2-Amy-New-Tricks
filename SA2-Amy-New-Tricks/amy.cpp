@@ -108,6 +108,7 @@ void Amy_NewMoves_Main(ObjectMaster* tsk) {
 	CharObj2Base* co2 = MainCharObj2[pnum];
 	EntityData1* data = MainCharObj1[pnum];
 	EntityData2* mwp = MainCharData2[pnum];
+	SonicCharObj2* SonicCO2 = (SonicCharObj2*)tsk->Data2.Undefined;
 
 	if (co2->CharID2 != Characters_Amy)
 		return;
@@ -171,12 +172,11 @@ void Amy_NewMoves_Main(ObjectMaster* tsk) {
 	
 	}
 
-	AmySetAttackColli(co2, data);
+	AmySetAttackColli(SonicCO2, co2, data);
 }
 
 static void Amy_Exec_r(ObjectMaster* tsk)
 {
-
 
 	Amy_NewMoves_Main(tsk);
 

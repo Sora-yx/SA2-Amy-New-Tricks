@@ -12,6 +12,14 @@ void Amy_Callback_r(NJS_OBJECT* model) {
 		memcpy(&AmyHeadMatrix, _nj_current_matrix_ptr_, 0x30u);
 	}
 
+
+	NJS_OBJECT* hammer = CharacterModels[506].Model;
+
+	if (hammer)
+	{
+		memcpy(&AmyHammerMatrix, _nj_current_matrix_ptr_, 0x30u);
+	}
+
 	FunctionPointer(void, original, (NJS_OBJECT * model), Amy_Callback_t->Target());
 	original(model);
 }

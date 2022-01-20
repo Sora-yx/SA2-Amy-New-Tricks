@@ -17,7 +17,7 @@ extern NJS_MATRIX AmyHammerMatrix;
 
 int timerWaveProper = 0;
 
-void AmySetAttackColli(CharObj2Base* a1, EntityData1* data)
+void AmySetAttackColli(SonicCharObj2* sonicCO2, CharObj2Base* a1, EntityData1* data)
 {
 	CollisionInfo* ColInfo; // eax
 	CollisionData* v4; // ebp
@@ -52,25 +52,30 @@ void AmySetAttackColli(CharObj2Base* a1, EntityData1* data)
 			v4->damage = v5 & 3 | v4->damage & 0xF0 | (4 * (v6 & 3));
 		}
 
+		njPushMatrixEx();
+		memcpy(CUR_MATRIX, &AmyRightHandMatrix, 0x30u);
+		njGetTranslation(CUR_MATRIX, &a2a);
+		njTranslate(0, -0.5f, 0.1f, 0.0f);
+
+
+		a3.x = sonicCO2->righthand_pos.x + sonicCO2->righthand_vec0.x * a2a.x;
+		a3.y = sonicCO2->righthand_pos.y + sonicCO2->righthand_vec0.y * a2a.y;
+		a3.z = sonicCO2->righthand_pos.z + sonicCO2->righthand_vec0.z * a2a.z;
+		
 		data->Collision->CollisionArray->damage &= 0xFCu;
 		data->Collision->CollisionArray->damage |= 0xCu;
 		data->Collision->CollisionArray[1].attr &= 0xFFFFFFEF;
 		data->Collision->CollisionArray[1].param1 = 9.0;
 
-		njPushMatrixEx();
 
 		njRotateZ_(CUR_MATRIX, (unsigned __int16)data->Rotation.z);
 		njRotateX_(CUR_MATRIX, (unsigned __int16)data->Rotation.x);
 		njRotateY_(CUR_MATRIX, (unsigned __int16)(0x8000 - data->Rotation.y));
 
-		memcpy(_nj_current_matrix_ptr_, AmyHammerMatrix, 0x30u);
-		a2a.x = 0;
-		a2a.y = 0;
-		a2a.z = 0;
-		njTranslateV(CUR_MATRIX, &a3);
-	
+
 		data->Collision->CollisionArray[1].center = a3;
 		AmyEffectPutSpdDwnHeart(&a3);
+		Sonic_Afterimage(data, a1, sonicCO2);
 		njPopMatrixEx();
 
 		break;

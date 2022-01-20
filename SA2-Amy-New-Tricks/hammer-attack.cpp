@@ -315,7 +315,7 @@ void __cdecl AmyEffectPutFallHeart(NJS_VECTOR a1, int rotX, int rotZ)
 	for (i = 0; i < 0x10000; i += 0x2000)
 	{
 		njRotateY(0, 0x2000);
-		njCalcPoint_(&pos, &a3, CUR_MATRIX);
+		njCalcPointR(CUR_MATRIX, &a3, &pos, 0);
 		obj = LoadObject(2, "AmyEffectFallHeart", AmyEffectFallHeart, 10);
 		if (obj)
 		{

@@ -67,7 +67,7 @@ static inline signed int Sonic_CheckNextAction(SonicCharObj2* a1, EntityData1* a
 FunctionPointer(BOOL, PResetAccelerationAir, (EntityData2* a1, EntityData1* a2, CharObj2Base* a3), 0x46E630);
 
 static const void* const njCalcPointPtr_ = (void*)0x426CC0;
-static inline void njCalcPoint_(float* matrix, NJS_VECTOR* v, NJS_VECTOR* transform, char additive)
+static inline void njCalcPointR(float* matrix, NJS_VECTOR* v, NJS_VECTOR* transform, char additive)
 {
 	__asm
 	{
