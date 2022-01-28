@@ -18,6 +18,32 @@ bool BlockDoubleJump[MaxPlayers]{};
 extern NJS_MATRIX AmyHammerMatrix;
 
 int timerWaveProper = 0;
+float hammerScale = 1.0f;
+
+void AmySetHammerScale(CharObj2Base* a1) {
+
+	switch (a1->AnimInfo.Current)
+	{
+	default:
+
+		if (hammerScale > 1.0f)
+			hammerScale -= 0.1f;
+
+		break;
+	case HammerAttackAnim:
+	case HammerAirAnim:
+	case HammerSpinSetAnim:
+
+		if (hammerScale < 1.2f)
+			hammerScale += 0.1f;
+		break;
+	case HammerSpinAnim:
+
+		if (hammerScale < 1.5f)
+			hammerScale += 0.1f;
+		break;
+	}
+}
 
 void AmySetAttackColli(SonicCharObj2* sonicCO2, CharObj2Base* a1, EntityData1* data)
 {
@@ -28,24 +54,33 @@ void AmySetAttackColli(SonicCharObj2* sonicCO2, CharObj2Base* a1, EntityData1* d
 	Vector3 a2a; // [esp+10h] [ebp-Ch] BYREF
 	NJS_VECTOR pos;
 
-	switch (a1->AnimInfo.Current)
+	int curAnim = a1->AnimInfo.Current;
+
+	switch (curAnim)
 	{
 	case HammerAttackAnim:
+	case HammerSpinSetAnim:
 	case HammerSpinAnim:
 	case HammerAirAnim:
 
 		data->Collision->CollisionArray->damage &= 0xFCu;
 		data->Collision->CollisionArray->damage |= 0xCu;
 		data->Collision->CollisionArray[1].attr &= 0xFFFFFFEF;
-		data->Collision->CollisionArray[1].param1 = 9.0;
+		data->Collision->CollisionArray[1].param1 = 10.0;
 		data->Status |= Status_Attack;
 
 		//move Amy's collision to her hammer Credits: Kell 
 
-		pos = { -5.0f, -1.0f, 0.0f };
+		pos = { -8.0f, -1.0f, 0.0f };
+
+		if (curAnim == HammerSpinAnim || curAnim == HammerSpinSetAnim) {
+			pos.y -= 10.0f;
+		}
+		
+		
 		njPushMatrix((NJS_MATRIX_PTR)0x1A51A3C); // Right hand matrix
-		njCalcVector(_nj_current_matrix_ptr_, &pos, &pos, 0);
-		njCalcVector((NJS_MATRIX_PTR)0x1A51A00, &pos, &pos, 0); // Base matrix
+		njCalcPointR(CUR_MATRIX, &pos, &pos, 0);
+		njCalcPointR((NJS_MATRIX_PTR)0x1A51A00, &pos, &pos, 0); // Base matrix
 		njPopMatrixEx();
 
 		data->Collision->CollisionArray[1].center = pos;

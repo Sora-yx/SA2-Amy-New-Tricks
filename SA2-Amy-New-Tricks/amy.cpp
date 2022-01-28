@@ -168,6 +168,7 @@ static void Amy_Exec_r(ObjectMaster* tsk)
 
 	Amy_NewMoves_Main(tsk);
 
+
 	ObjectFunc(origin, Amy_Exec_t->Target());
 	origin(tsk);
 
@@ -178,6 +179,7 @@ static void Amy_Exec_r(ObjectMaster* tsk)
 	EntityData2* mwp = MainCharData2[pnum];
 	SonicCharObj2* SonicCO2 = (SonicCharObj2*)tsk->Data2.Undefined;
 
+	AmySetHammerScale(co2);
 	AmySetAttackColli(SonicCO2, co2, data);
 
 }

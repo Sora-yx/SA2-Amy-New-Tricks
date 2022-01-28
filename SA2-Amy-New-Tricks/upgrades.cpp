@@ -24,24 +24,39 @@ void Amy_Callback_r(NJS_OBJECT* model) {
 	original(model);
 }
 
-
+extern float hammerScale;
 void DisplayUpgrade() {
 
 	if (SonicCO2PtrExtern->base.CharID2 != Characters_Amy)
 		return;
 
 	NJS_OBJECT* hammer = CharacterModels[506].Model;
+	NJS_OBJECT* hammerChild = CharacterModels[506].Model->child;
 	char pnum = SonicCO2PtrExtern->base.PlayerNum;
 	short curAnim = MainCharObj2[pnum]->AnimInfo.Current;
 
 	if (hammer)
 	{
+
+		hammer->scl[0] = hammerScale;
+		hammer->scl[1] = hammerScale;
+		hammer->scl[2] = hammerScale;
+		hammerChild->scl[0] = hammerScale;
+		hammerChild->scl[1] = hammerScale;
+		hammerChild->scl[2] = hammerScale;
+
+		if (curAnim == HammerSpinSetAnim) {
+			hammer->ang[2] = MainCharObj1[pnum]->Rotation.z + 0x500;
+		}
+
+		if (curAnim == HammerSpinAnim) {
+			hammer->ang[2] = MainCharObj1[pnum]->Rotation.z + 0x3000;
+			hammerChild->ang[0] = 0x4000;
+		}
+
 		if (MainCharObj2[pnum]->Speed.x >= 2.0 && MainCharObj1[pnum]->Action < 3 || curAnim == HammerJumpStartAnim || curAnim >= HammerAttackAnim && curAnim <= HammerSpinAnim) {
 			njPushMatrixEx();
 			memcpy(CUR_MATRIX, &AmyRightHandMatrix, 0x30u);
-
-			if (curAnim == HammerSpinSetAnim || curAnim == HammerSpinAnim)
-				njRotateZ_(CUR_MATRIX, MainCharObj1[pnum]->Rotation.z + 0x3000);
 
 			njTranslate(nullptr, -0.5f, 0.1f, 0.0f);
 			DrawObject(hammer);
