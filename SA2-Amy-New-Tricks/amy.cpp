@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "abilities.h"
 
-
-
 static Trampoline* Amy_Exec_t = nullptr;
 static Trampoline* Amy_runsActions_t = nullptr;
 Trampoline* LoadCharacters_t = nullptr;
@@ -11,7 +9,6 @@ NJS_TEXNAME AmyEff_Tex[4]{};
 NJS_TEXLIST AmyEff_TEXLIST = { arrayptrandlength(AmyEff_Tex, Uint32) };
 
 ModelInfo* WaveMdl = nullptr;
-
 
 static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityData2* mwp, CharObj2Base* co2)
 {
@@ -159,8 +156,9 @@ void Amy_NewMoves_Main(ObjectMaster* tsk) {
 		PResetPosition(data, mwp, co2);
 
 		co2->PhysData.Weight = RestoreSpeed;
+
 		break;
-	
+
 	}
 
 }
