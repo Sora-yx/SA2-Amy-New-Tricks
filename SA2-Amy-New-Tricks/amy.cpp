@@ -163,7 +163,6 @@ void Amy_NewMoves_Main(ObjectMaster* tsk) {
 	
 	}
 
-	AmySetAttackColli(SonicCO2, co2, data);
 }
 
 static void Amy_Exec_r(ObjectMaster* tsk)
@@ -173,6 +172,15 @@ static void Amy_Exec_r(ObjectMaster* tsk)
 
 	ObjectFunc(origin, Amy_Exec_t->Target());
 	origin(tsk);
+
+	char pnum = tsk->Data2.Character->PlayerNum;
+
+	CharObj2Base* co2 = MainCharObj2[pnum];
+	EntityData1* data = MainCharObj1[pnum];
+	EntityData2* mwp = MainCharData2[pnum];
+	SonicCharObj2* SonicCO2 = (SonicCharObj2*)tsk->Data2.Undefined;
+
+	AmySetAttackColli(SonicCO2, co2, data);
 
 }
 

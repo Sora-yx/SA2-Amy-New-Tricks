@@ -25,8 +25,8 @@ void AmySetAttackColli(SonicCharObj2* sonicCO2, CharObj2Base* a1, EntityData1* d
 	CollisionData* v4; // ebp
 	char v5; // cl
 	char v6; // al
-	Vector3 a3; // [esp+4h] [ebp-18h] BYREF
 	Vector3 a2a; // [esp+10h] [ebp-Ch] BYREF
+	NJS_VECTOR pos;
 
 	switch (a1->AnimInfo.Current)
 	{
@@ -34,46 +34,23 @@ void AmySetAttackColli(SonicCharObj2* sonicCO2, CharObj2Base* a1, EntityData1* d
 	case HammerSpinAnim:
 	case HammerAirAnim:
 
-		ColInfo = data->Collision;
-		if (ColInfo)
-		{
-			v4 = ColInfo->CollisionArray;
-			v4[1].attr |= 0x10u;
-			data->Status &= 0xFBu;
-			if (a1->Powerups >= 0)
-			{
-				v5 = 0;
-				v6 = 0;
-			}
-			else
-			{
-				v5 = 3;
-				v6 = 3;
-			}
-			v4->damage = v5 & 3 | v4->damage & 0xF0 | (4 * (v6 & 3));
-		}
-
-		njPushMatrixEx();
-		memcpy(CUR_MATRIX, &AmyRightHandMatrix, 0x30u);
-		njGetTranslation(CUR_MATRIX, &a2a);
-		njTranslate(0, -0.5f, 0.1f, 0.0f);
-
-		a3.x = sonicCO2->righthand_pos.x + sonicCO2->righthand_vec0.x * a2a.x;
-		a3.y = sonicCO2->righthand_pos.y + sonicCO2->righthand_vec0.y * a2a.y;
-		a3.z = sonicCO2->righthand_pos.z + sonicCO2->righthand_vec0.z * a2a.z;	
-
 		data->Collision->CollisionArray->damage &= 0xFCu;
 		data->Collision->CollisionArray->damage |= 0xCu;
 		data->Collision->CollisionArray[1].attr &= 0xFFFFFFEF;
 		data->Collision->CollisionArray[1].param1 = 9.0;
-
-		njRotateZ_(CUR_MATRIX, (unsigned __int16)data->Rotation.z);
-		njRotateX_(CUR_MATRIX, (unsigned __int16)data->Rotation.x);
-		njRotateY_(CUR_MATRIX, (unsigned __int16)(0x8000 - data->Rotation.y));
-
 		data->Status |= Status_Attack;
-		data->Collision->CollisionArray[1].center = a3;
-		AmyEffectPutSpdDwnHeart(&a3);
+
+		//move Amy's collision to her hammer Credits: Kell 
+
+		pos = { -5.0f, -1.0f, 0.0f };
+		njPushMatrix((NJS_MATRIX_PTR)0x1A51A3C); // Right hand matrix
+		njCalcVector(_nj_current_matrix_ptr_, &pos, &pos, 0);
+		njCalcVector((NJS_MATRIX_PTR)0x1A51A00, &pos, &pos, 0); // Base matrix
+		njPopMatrixEx();
+
+		data->Collision->CollisionArray[1].center = pos;
+
+		AmyEffectPutSpdDwnHeart(&pos);
 		Sonic_Afterimage(data, a1, sonicCO2);
 		njPopMatrixEx();
 

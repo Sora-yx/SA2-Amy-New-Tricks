@@ -1,8 +1,5 @@
 #pragma once
 
-
-
-
 static const void* const PResetAnglePtr = (void*)0x460260;
 static inline void PResetAngle(EntityData1* a1, CharObj2Base* co2)
 {
@@ -29,7 +26,6 @@ static inline void PGetFriction(EntityData1* data, EntityData2* data2, CharObj2B
 
 	}
 }
-
 
 FunctionPointer(void, PGetAcceleration, (EntityData1* data1, EntityData2* data2, CharObj2Base* co2), 0x45B610);
 
