@@ -21,6 +21,5 @@ signed int AmyCheckHammerAttack(EntityData1* data1, CharObj2Base* co2);
 void DoAmyHammerAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base* co2, EntityData2* data2);
 void Upgrades_Init();
 void njGetTranslation(NJS_MATRIX_PTR matrix, NJS_VECTOR* out);
-void Amy_DisplayAfterImageR(EntityData1* a1, CharObj2Base* a2, SonicCharObj2* a3);
 
 #define STATUS_FLOOR (Status_Ground | Status_OnObjectColli)

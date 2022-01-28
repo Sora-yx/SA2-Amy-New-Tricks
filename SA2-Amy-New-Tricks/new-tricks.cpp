@@ -18,40 +18,6 @@ bool BlockDoubleJump[MaxPlayers]{};
 extern NJS_MATRIX AmyHammerMatrix;
 
 int timerWaveProper = 0;
-DataArray(float, flt_25F02A0, 0x25F02A0, 5);
-
-void Amy_DisplayAfterImageR(EntityData1* a1, CharObj2Base* a2, SonicCharObj2* a3)
-{
-	NJS_OBJECT* MDL; // edi
-	NJS_MOTION* mtn;
-
-	if ((FrameCountIngame & 10) == 0 && CharacterModels[395].Model)
-	{
-		MDL = CharacterModels[395].Model;
-		mtn = CharacterAnimations[a2->AnimInfo.Animations[a2->AnimInfo.Current].AnimNum].Animation;
-		njPushMatrix(flt_25F02A0);
-
-		njPushUnitMatrix();
-		NJS_VECTOR pos = { 0, 0, a2->PhysData.Height * 0.5 };
-		NJS_VECTOR result;
-		njCalcVector_(&pos, &result, flt_25F02A0);
-		njPopMatrix(1u);
-		result.x = result.x + a1->Position.x;
-		result.y = result.y + a1->Position.y;
-		result.z = result.z + a1->Position.z;
-		njTranslateEx(&result);
-
-		njRotateZ_(CUR_MATRIX, a1->Rotation.z);
-		njRotateX_(CUR_MATRIX, a1->Rotation.x);
-		njRotateY_(CUR_MATRIX, 0x8000 - a1->Rotation.y);
-
-		if (!TwoPlayerMode)
-		{
-			PlayerAfterImage(MDL, mtn, a3->TextureList, a2->AnimInfo.field_10, a2->PlayerNum);
-		}
-		njPopMatrix(1u);
-	}
-}
 
 void AmySetAttackColli(SonicCharObj2* sonicCO2, CharObj2Base* a1, EntityData1* data)
 {
@@ -85,8 +51,6 @@ void AmySetAttackColli(SonicCharObj2* sonicCO2, CharObj2Base* a1, EntityData1* d
 		data->Collision->CollisionArray[1].center = pos;
 
 		AmyEffectPutSpdDwnHeart(&pos);
-		//AmyAfterImage(a1, data, sonicCO2);
-		Amy_DisplayAfterImageR(data, a1, sonicCO2);
 		njPopMatrixEx();
 
 		break;
