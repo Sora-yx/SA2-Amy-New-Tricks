@@ -2,8 +2,8 @@
 #include "abilities.h"
 
 Buttons HammerPropButton = Buttons_X;
-Buttons HammerAttackButton = (Buttons)0;
-Buttons HammerAirButton = Buttons_B;
+Buttons HammerAttackButton = Buttons_Y;
+Buttons HammerAirButton = Buttons_Y;
 Buttons HammerJumpButton = Buttons_B;
 
 float PropellerGravity = 0.011f;

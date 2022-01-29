@@ -48,10 +48,13 @@ void DisplayUpgrade() {
 		if (curAnim == HammerSpinSetAnim) {
 			hammer->ang[2] = MainCharObj1[pnum]->Rotation.z + 0x500;
 		}
-
-		if (curAnim == HammerSpinAnim) {
+		else if (curAnim == HammerSpinAnim) {
 			hammer->ang[2] = MainCharObj1[pnum]->Rotation.z + 0x3000;
 			hammerChild->ang[0] = 0x4000;
+		}
+		else {
+			hammer->ang[2] = 0;
+			hammerChild->ang[0] = 0;
 		}
 
 		if (MainCharObj2[pnum]->Speed.x >= 2.0 && MainCharObj1[pnum]->Action < 3 || curAnim == HammerJumpStartAnim || curAnim >= HammerAttackAnim && curAnim <= HammerSpinAnim) {

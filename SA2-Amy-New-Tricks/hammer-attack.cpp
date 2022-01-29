@@ -11,18 +11,17 @@ signed int AmyCheckHammerAttack(EntityData1* data1, CharObj2Base* co2) {
 		return 0;
 	}
 
-	co2->Speed.x = 0.0;
-	co2->Speed.z = 0.0;
-
+	//co2->Speed.x = 0.0;
+	//co2->Speed.z = 0.0;
 	data1->Action = HammerAttack;
 	co2->AnimInfo.Next = HammerAttackAnim;
-	PlayCustomSoundVolume(Voice_AmyHammerAttack, 3);
 
 	if ((data1->Status & 0x20) != 0)
 	{
 		co2->DynColInfo->anaspdv.y = 0.0;
 	}
 
+	PlayCustomSoundVolume(Voice_AmyHammerAttack, 3);
 	return 1;
 }
 
@@ -292,10 +291,10 @@ void __cdecl AmyPutHammerWave(ObjectMaster* obj)
 
 void __cdecl AmyEffectPutFallHeart(NJS_VECTOR a1, int rotX, int rotZ)
 {
-	int i; 
-	ObjectMaster* obj; 
-	EntityData1* data; 
-	Vector3 a3; 
+	int i;
+	ObjectMaster* obj;
+	EntityData1* data;
+	Vector3 a3;
 	Vector3 pos;
 
 	njPushMatrix(_nj_unit_matrix_);
@@ -385,7 +384,7 @@ void DoAmyHammerAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base
 
 		if (co2->AnimInfo.Current == HammerSpinSetAnim) {
 
-			if (AmySpinAttack_Check(co2, data1)) 
+			if (AmySpinAttack_Check(co2, data1))
 				return;
 			else {
 				data1->Status &= ~Status_Attack;
@@ -402,11 +401,7 @@ void DoAmyHammerAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base
 			}
 		}
 	}
-	else {
-		data1->Status &= ~Status_Attack;
-		data1->Action = Action_None;
-		co2->AnimInfo.Next = 0;
-	}
+
 
 	return;
 }

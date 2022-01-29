@@ -6,7 +6,7 @@ int timerDizzy = 0;
 int AmySpinAttack_Check(CharObj2Base* co2, EntityData1* data)
 {
 
-    if ((Controllers[co2->PlayerNum].on & HammerPropButton) == 0 || co2->CharID2 != Characters_Amy || !HammerPropButton)
+    if ((Controllers[co2->PlayerNum].on & HammerAttackButton) == 0 || co2->CharID2 != Characters_Amy || !HammerAttackButton)
     {
         return 0;
     }
@@ -27,7 +27,7 @@ void DoAmySpinAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base* 
 
     int curAnim = co2->AnimInfo.Current;
 
-    if ((Controllers[co2->PlayerNum].on & HammerPropButton) == 0)
+    if ((Controllers[co2->PlayerNum].on & HammerAttackButton) == 0)
     {
         FreeAllCustomSounds();
         data1->Status &= ~Status_Attack;

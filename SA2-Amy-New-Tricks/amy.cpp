@@ -51,7 +51,6 @@ static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityDat
 	case Action_Jump:
 	case Action_Fall:
 
-
 		if (AmyProp_Check(data, co2))
 			return;
 
