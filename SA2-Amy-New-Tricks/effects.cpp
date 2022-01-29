@@ -303,6 +303,6 @@ void Do_HammerWaveHeartEffect(EntityData1* data1) {
 		AmyEffectPutFallHeart(hammerWave->Data1.Entity->Position, data1->Rotation.x, data1->Rotation.z);
 	}
 
-	PlayDelayedCustomSound(SE_HammerAttack, 2, 0);
+	PlayDelayedCustomSound(SE_HammerAttack, 2, 1);
 	VibeThing(0, 15, 0, 6);
 }

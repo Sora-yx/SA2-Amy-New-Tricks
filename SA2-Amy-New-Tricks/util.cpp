@@ -91,11 +91,13 @@ AnimationFile* LoadAnim(const char* name) {
 }
 
 void FreeMDL(ModelInfo* pointer) {
-	if (pointer) delete(pointer);
+	if (pointer) 
+		delete(pointer);
 }
 
 void FreeAnim(AnimationFile* pointer) {
-	if (pointer) delete pointer;
+	if (pointer) 
+		delete pointer;
 }
 
 int __cdecl BAMS_SubWrap(__int16 bams_a, unsigned __int16 bams_b, int limit)

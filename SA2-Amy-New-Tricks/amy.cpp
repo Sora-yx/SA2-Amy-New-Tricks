@@ -3,6 +3,7 @@
 
 static Trampoline* Amy_Exec_t = nullptr;
 static Trampoline* Amy_runsActions_t = nullptr;
+static Trampoline* Amy_delete_t = nullptr;
 Trampoline* LoadCharacters_t = nullptr;
 
 NJS_TEXNAME AmyEff_Tex[4]{};
@@ -152,7 +153,6 @@ void Amy_NewMoves_Main(ObjectMaster* tsk) {
 
 		co2->PhysData.Weight = RestoreSpeed;
 		break;
-
 	}
 }
 
@@ -178,6 +178,19 @@ void Load_AmyEffText() {
 	return;
 }
 
+void Amy_Delete_R(ObjectMaster* obj)
+{
+	SonicCharObj2* sonicCO2 = (SonicCharObj2*)obj->Data2.Undefined;
+
+	if (sonicCO2->base.CharID2 == Characters_Amy) {
+		FreeMDL(WaveMdl);
+		FreeTexList(&AmyEff_TEXLIST);
+	}
+
+	ObjectFunc(origin, Amy_delete_t->Target());
+	origin(obj);
+}
+
 void LoadCharacter_r() {
 
 	auto original = reinterpret_cast<decltype(LoadCharacter_r)*>(LoadCharacters_t->Target());
@@ -197,11 +210,11 @@ void LoadCharacter_r() {
 	return;
 }
 
-
 void Amy_Init()
 {
 	Amy_Exec_t = new Trampoline((int)Sonic_Main, (int)Sonic_Main + 0x6, Amy_Exec_r);
 	Amy_runsActions_t = new Trampoline((int)Sonic_runsActions, (int)Sonic_runsActions + 0x8, Amy_runsActions_r);
+	Amy_delete_t = new Trampoline((int)Sonic_Delete, (int)Sonic_Delete + 0x5, Amy_Delete_R);
 	LoadCharacters_t = new Trampoline((int)LoadCharacters, (int)LoadCharacters + 0x6, LoadCharacter_r);
 	return;
 }

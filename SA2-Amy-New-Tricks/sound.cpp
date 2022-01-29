@@ -18,9 +18,10 @@ static bool SoundDevice;
 
 VoidFunc(sub_443250, 0x443250); 
 
-//we use trampoline to hack 2 functions to pause and unpause custom sounds so every mod that hack those won't conflict.
+//we use trampoline to hack 3 functions to pause, unpause and free all custom sounds so every mod that hack those won't conflict.
 Trampoline* PauseSound_t = nullptr;
 Trampoline* ResumeSound_t = nullptr;
+Trampoline* FreeSoundQueue_t = nullptr;
 
 void PauseCustomSounds() {
 	for (int i = 0; i < LengthOfArray(SoundListEntries); ++i) {
@@ -109,6 +110,16 @@ void FreeAllCustomSounds() {
 		SoundListEntries[i].position = NULL;
 	}
 }
+
+void __cdecl FreeSoundQueue_r() 
+{
+	auto original = reinterpret_cast<decltype(FreeSoundQueue_r)*>(FreeSoundQueue_t->Target());
+	original();
+
+	if (GameState != GameStates_Pause && GameState != GameStates_Ingame)
+		FreeAllCustomSounds();
+}
+
 
 DWORD LoadSoundSteam_LoadFromFile(std::string path) {
 	const char* filename = HelperFunctionsGlobal.GetReplaceablePath(path.c_str());
@@ -312,5 +323,6 @@ void RunCustomSounds() {
 void init_BassSound() {
 	PauseSound_t = new Trampoline((int)sub_443250, (int)sub_443250 + 0x6, PauseSound_r);
 	ResumeSound_t = new Trampoline((int)Menu_Unknown_13, (int)Menu_Unknown_13 + 0x5, ResumeSound_r);
+	FreeSoundQueue_t = new Trampoline((int)FreeSoundQueue, (int)FreeSoundQueue + 0x5, FreeSoundQueue_r);
 	return;
 }

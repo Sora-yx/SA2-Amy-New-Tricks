@@ -27,10 +27,5 @@ extern "C" {
 		RunCustomSounds();
 	}	
 	
-	__declspec(dllexport) void __cdecl OnExit() {
-		FreeAllCustomSounds();
-	}
-
-
 	__declspec(dllexport) ModInfo SA2ModInfo = { ModLoaderVer };
 }
