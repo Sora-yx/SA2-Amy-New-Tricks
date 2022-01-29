@@ -12,12 +12,8 @@ ModelInfo* WaveMdl = nullptr;
 
 static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityData2* mwp, CharObj2Base* co2)
 {
-	if (!data)
+	if ((!data) || co2->CharID2 != Characters_Amy)
 		return;
-
-	if (co2->CharID2 != Characters_Amy)
-		return;
-
 
 	switch (data->Action)
 	{
@@ -155,37 +151,31 @@ void Amy_NewMoves_Main(ObjectMaster* tsk) {
 		PResetPosition(data, mwp, co2);
 
 		co2->PhysData.Weight = RestoreSpeed;
-
 		break;
 
 	}
-
 }
 
 static void Amy_Exec_r(ObjectMaster* tsk)
 {
-
 	Amy_NewMoves_Main(tsk);
-
 
 	ObjectFunc(origin, Amy_Exec_t->Target());
 	origin(tsk);
 
 	char pnum = tsk->Data2.Character->PlayerNum;
-
 	CharObj2Base* co2 = MainCharObj2[pnum];
 	EntityData1* data = MainCharObj1[pnum];
-	EntityData2* mwp = MainCharData2[pnum];
 	SonicCharObj2* SonicCO2 = (SonicCharObj2*)tsk->Data2.Undefined;
 
 	AmySetHammerScale(co2);
 	AmySetAttackColli(SonicCO2, co2, data);
-
 }
 
 void Load_AmyEffText() {
 	LoadTextureList("AMY_EFF_DC", &AmyEff_TEXLIST);
 	WaveMdl = LoadMDL("WaveMdl", ModelFormat_Chunk);
+	return;
 }
 
 void LoadCharacter_r() {

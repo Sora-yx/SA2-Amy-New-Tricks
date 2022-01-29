@@ -173,6 +173,7 @@
     <ClCompile Include="bird.cpp" />
     <ClCompile Include="config.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="effects.cpp" />
     <ClCompile Include="hammer-air.cpp" />
     <ClCompile Include="hammer-attack.cpp" />
     <ClCompile Include="hammer-jump.cpp" />

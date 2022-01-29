@@ -3,7 +3,6 @@
 int bird = flicky;
 bool grunt = false;
 
-
 void ReadConfig(const char* path) {
 
 	const IniFile* config = new IniFile(std::string(path) + "\\config.ini");

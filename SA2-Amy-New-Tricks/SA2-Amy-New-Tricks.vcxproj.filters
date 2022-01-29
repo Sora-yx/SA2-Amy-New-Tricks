@@ -89,5 +89,8 @@
     <ClCompile Include="new-tricks.cpp">
       <Filter>Source Files\abilities</Filter>
     </ClCompile>
+    <ClCompile Include="effects.cpp">
+      <Filter>Source Files\abilities\SA1</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

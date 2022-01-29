@@ -170,7 +170,6 @@ void AmyProp_Run(SonicCharObj2* sonicCO2, EntityData1* data, EntityData2* data2,
 		}
 	}
 
-
 	// Hammer Spin Animation
 	co2->AnimInfo.Next = HammerSpinAnim;
 	// Attack status

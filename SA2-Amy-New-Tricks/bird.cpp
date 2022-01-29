@@ -1,6 +1,5 @@
 #include "pch.h"
 
-
 ModelInfo* Bird = nullptr;
 AnimationFile* BirdMotion = nullptr;
 
@@ -11,7 +10,6 @@ NJS_TEXNAME WING_P_texname[7];
 NJS_TEXLIST WING_P_texlist = { arrayptrandlengthT(WING_P_texname, Uint32) };
 
 int randFlicky = 0;
-
 
 void Bird_Delete(ObjectMaster* obj) {
 	FreeMDL(Bird);

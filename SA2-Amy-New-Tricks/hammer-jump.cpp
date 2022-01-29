@@ -11,8 +11,6 @@ signed int AmyCheckHammerJump(EntityData1* data1, CharObj2Base* co2) {
 	data1->Action = HammerJump;
 	co2->AnimInfo.Next = HammerJumpStartAnim;
 	PlayCustomSoundVolume(Voice_AmyHammerJump, 3);
-
-	//PlaySound(1289, 0, 0, 0);
 	return 1;
 }
 

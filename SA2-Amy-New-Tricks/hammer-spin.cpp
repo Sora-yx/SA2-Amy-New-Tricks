@@ -17,7 +17,6 @@ int AmySpinAttack_Check(CharObj2Base* co2, EntityData1* data)
     return 1;
 }
 
-
 void DoAmySpinAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base* co2, EntityData2* data2) {
 
     if (Sonic_CheckNextAction(sonicCO2, data1, data2, co2) || (data1->Status & STATUS_FLOOR) == 0) {

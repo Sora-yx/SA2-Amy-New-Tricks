@@ -283,7 +283,9 @@ void Load_AmyNewAnim() {
 	id = 0;
 
 	AmyNewAnimList = LoadMTNFile((char*)"\\animations\\NewAmyMtn.prs");
+	PrintDebug("\n [Amy New Trick]: Loading New Animation");
 
+	//pretty sure this code below isn't needed and never reached, but just in case....
 	if (AmyNewAnimList[0].Index != 0xFFFF)
 	{
 		AmyNewAnim = AmyNewAnimList;
@@ -299,7 +301,6 @@ void Load_AmyNewAnim() {
 					anim = AmyNewAnim->Animation;
 					CharacterAnimations[indexCopy].Count = count;
 					CharacterAnimations[indexCopy].Animation = anim;
-					PrintDebug("\n [Amy New Trick]: Loading New Animation %d", anim);
 				}
 			}
 			animIndex = AmyNewAnimList[++id].Index;

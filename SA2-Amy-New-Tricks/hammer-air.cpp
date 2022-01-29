@@ -1,6 +1,5 @@
 #include "pch.h"
 
-
 int AmyAirAttack_Check(CharObj2Base* co2, EntityData1* data)
 {
     if ((Controllers[co2->PlayerNum].press & HammerAirButton) == 0 || co2->CharID2 != Characters_Amy || !HammerAirButton)
