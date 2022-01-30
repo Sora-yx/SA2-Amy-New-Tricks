@@ -13,10 +13,14 @@ void ReadConfig(const char* path) {
 
 	Amy_AbilitiesConfig(config, physics);
 
+	delete config;
+
+
 	if (bird != none) {
 		Init_Bird();
 	}
 
-	delete config;
+	if (!grunt)
+		WriteData<5>((int*)0x71AF71, 0x90);
 
 }

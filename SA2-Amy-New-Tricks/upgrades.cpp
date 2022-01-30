@@ -8,6 +8,10 @@ NJS_MATRIX AmyHammerMatrix;
 
 void Amy_Callback_r(NJS_OBJECT* model) {
 
+	FunctionPointer(void, original, (NJS_OBJECT * model), Amy_Callback_t->Target());
+	original(model);
+
+
 	if (model == CharacterModels[403].Model) { //warrier feather sa1 amy support
 		memcpy(&AmyHeadMatrix, _nj_current_matrix_ptr_, 0x30u);
 	}
@@ -18,16 +22,15 @@ void Amy_Callback_r(NJS_OBJECT* model) {
 	{
 		memcpy(&AmyHammerMatrix, _nj_current_matrix_ptr_, 0x30u);
 	}
-
-	FunctionPointer(void, original, (NJS_OBJECT * model), Amy_Callback_t->Target());
-	original(model);
 }
 
 extern float hammerScale;
 void DisplayUpgrade() {
 
-	if (SonicCO2PtrExtern->base.CharID2 != Characters_Amy)
+	if (SonicCO2PtrExtern->base.CharID2 != Characters_Amy) {
+		njPushMatrixEx();
 		return;
+	}
 
 	NJS_OBJECT* hammer = CharacterModels[506].Model;
 
