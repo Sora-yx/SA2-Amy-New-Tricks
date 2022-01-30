@@ -25,6 +25,9 @@ enum CM_SoundList {
 	Voice_AmyHammerAir = 2000,
 	Voice_AmyHammerAttack,
 	Voice_AmyHammerJump,
+	VoiceJP_AmyHammerAir = 3000,
+	VoiceJP_AmyHammerAttack,
+	VoiceJP_AmyHammerJump,
 };
 
 void init_BassSound();

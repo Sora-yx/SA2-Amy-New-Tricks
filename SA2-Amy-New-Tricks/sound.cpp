@@ -155,6 +155,13 @@ float GetVolumeRange(NJS_VECTOR* pos, float dist) {
 }
 
 void PlaySoundChannelQueue(int ID, int entryID, bool loop) {
+
+	if (ID >= 2000 && ID <= 2999)
+	{
+		if (!VoiceLanguage) //switch to JP voices
+			ID += 1000; 
+	}
+
 	HSTREAM channel = LoadSoundStream(ID);
 
 	if (channel != 0)

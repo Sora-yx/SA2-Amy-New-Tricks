@@ -8,10 +8,9 @@ NJS_MATRIX AmyHammerMatrix;
 
 void Amy_Callback_r(NJS_OBJECT* model) {
 
-	if (model == CharacterModels[403].Model) {
+	if (model == CharacterModels[403].Model) { //warrier feather sa1 amy support
 		memcpy(&AmyHeadMatrix, _nj_current_matrix_ptr_, 0x30u);
 	}
-
 
 	NJS_OBJECT* hammer = CharacterModels[506].Model;
 
@@ -53,9 +52,20 @@ void DisplayUpgrade() {
 			hammer->ang[2] = MainCharObj1[pnum]->Rotation.z + 0x500;
 		}
 		else if (curAnim == HammerSpinAnim) {
-			hammer->ang[2] = MainCharObj1[pnum]->Rotation.z + 0x3000;
-			if (hammerChild) {
-				hammerChild->ang[0] = 0x4000;
+
+			if (isSA1Amy()) {
+
+				hammer->ang[2] = MainCharObj1[pnum]->Rotation.z + 0x3000;
+				if (hammerChild) {
+					hammerChild->ang[0] = 0x4000;
+				}
+			}
+			else 
+			{
+				if (hammerChild) {
+					hammerChild->ang[0] = 0x3000;
+					hammerChild->ang[1] = -0x4000;
+				}
 			}
 		}
 		else {
