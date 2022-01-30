@@ -193,6 +193,11 @@ signed int AmyProp_Check(EntityData1* data, CharObj2Base* co2)
 		data->Rotation.z = GravityAngle_Z;
 
 		//PlaySound(1279, 0, 0, 0);
+		if (co2->Speed.x > 5)
+		{
+			PlayVoice(2, 2677);
+		}
+
 		return 1;
 	}
 

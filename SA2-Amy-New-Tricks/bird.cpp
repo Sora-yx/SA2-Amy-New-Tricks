@@ -4,7 +4,7 @@ ModelInfo* Bird = nullptr;
 AnimationFile* BirdMotion = nullptr;
 
 NJS_TEXNAME Amy_texname[64];
-NJS_TEXLIST Amy_texlist = { arrayptrandlengthT(Amy_texname, Uint32) };
+NJS_TEXLIST Wing_texlist = { arrayptrandlengthT(Amy_texname, Uint32) };
 
 NJS_TEXNAME WING_P_texname[7];
 NJS_TEXLIST WING_P_texlist = { arrayptrandlengthT(WING_P_texname, Uint32) };
@@ -20,7 +20,7 @@ void __cdecl Bird_Display(ObjectMaster* obj) {
 	EntityData1* data = obj->Data1.Entity;
 
 	if (bird == flicky || randFlicky == flicky) {
-		njSetTexture(&Amy_texlist);
+		njSetTexture(&Wing_texlist);
 	}
 
 	if (bird == gammaFlicky || randFlicky == gammaFlicky) {
@@ -96,9 +96,6 @@ void __cdecl Load_AmyBird(ObjectMaster* obj) {
 void __cdecl AmyHook(ObjectMaster* obj) {
 	obj->MainSub = Sonic_Main;
 
-	if (TwoPlayerMode) {
-		return;
-	}
 
 	if (bird == randomFlicky) {
 		randFlicky = rand() % 2 + 1;
@@ -107,7 +104,7 @@ void __cdecl AmyHook(ObjectMaster* obj) {
 	if (bird == flicky || randFlicky == flicky) {
 		Bird = LoadMDL("bird", ModelFormat_Chunk);
 		BirdMotion = LoadAnim("wing_act.nam");
-		LoadTextureList("AMYTEX", &Amy_texlist);
+		LoadTextureList("WING", &Wing_texlist);
 	}
 
 	if (bird == gammaFlicky || randFlicky == gammaFlicky) {
