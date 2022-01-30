@@ -7,6 +7,7 @@ int AmyAirAttack_Check(CharObj2Base* co2, EntityData1* data)
         return 0;
     }
  
+    data->Status &= ~Status_Ball;
     data->Action = HammerAir;
     co2->AnimInfo.Next = HammerAirAnim;
     PlayCustomSoundVolume(Voice_AmyHammerAir, 1);

@@ -31,6 +31,12 @@ static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityDat
 			{
 				return;
 			}
+
+			if (HammerJumpButton != HammerAttackButton)
+			{
+				if (AmyCheckHammerAttack(data, co2))
+					return;
+			}
 		}
 		else {
 

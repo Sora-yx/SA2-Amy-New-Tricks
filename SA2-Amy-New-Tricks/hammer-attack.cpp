@@ -9,6 +9,7 @@ signed int AmyCheckHammerAttack(EntityData1* data1, CharObj2Base* co2) {
 	}
 
 	data1->Action = HammerAttack;
+	data1->Status &= ~Status_Ball;
 	co2->AnimInfo.Next = HammerAttackAnim;
 
 	if ((data1->Status & 0x20) != 0)

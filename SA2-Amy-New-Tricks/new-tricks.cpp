@@ -179,7 +179,7 @@ void AmyProp_Run(SonicCharObj2* sonicCO2, EntityData1* data, EntityData2* data2,
 signed int AmyProp_Check(EntityData1* data, CharObj2Base* co2)
 {
 	if (CheckControl(co2->PlayerNum) && Controllers[co2->PlayerNum].press & HammerPropButton
-		&& !(data->Status & STATUS_FLOOR) && co2->HeldObject == nullptr) //jump time?
+		&& !(data->Status & STATUS_FLOOR) && co2->HeldObject == nullptr) 
 	{
 		timerWaveProper = 0;
 		data->Action = HammerProp;

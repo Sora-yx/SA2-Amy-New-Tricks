@@ -121,3 +121,5 @@ static inline void VibeThing(int a1, signed int a2, int a3, signed int a4)
 }
 
 DataPointer(NJS_MATRIX, AmyRightHandMatrix, 0x1A51A3C);
+ObjectFunc(MetalBox, 0x6D6490);
+ObjectFunc(MetalBoxGravity, 0x77BB90);

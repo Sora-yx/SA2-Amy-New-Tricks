@@ -31,30 +31,38 @@ void DisplayUpgrade() {
 		return;
 
 	NJS_OBJECT* hammer = CharacterModels[506].Model;
-	NJS_OBJECT* hammerChild = CharacterModels[506].Model->child;
+
 	char pnum = SonicCO2PtrExtern->base.PlayerNum;
 	short curAnim = MainCharObj2[pnum]->AnimInfo.Current;
 
 	if (hammer)
 	{
-
 		hammer->scl[0] = hammerScale;
 		hammer->scl[1] = hammerScale;
 		hammer->scl[2] = hammerScale;
-		hammerChild->scl[0] = hammerScale;
-		hammerChild->scl[1] = hammerScale;
-		hammerChild->scl[2] = hammerScale;
+
+		NJS_OBJECT* hammerChild = CharacterModels[506].Model->child;
+
+		if (hammerChild) {
+			hammerChild->scl[0] = hammerScale;
+			hammerChild->scl[1] = hammerScale;
+			hammerChild->scl[2] = hammerScale;
+		}
 
 		if (curAnim == HammerSpinSetAnim) {
 			hammer->ang[2] = MainCharObj1[pnum]->Rotation.z + 0x500;
 		}
 		else if (curAnim == HammerSpinAnim) {
 			hammer->ang[2] = MainCharObj1[pnum]->Rotation.z + 0x3000;
-			hammerChild->ang[0] = 0x4000;
+			if (hammerChild) {
+				hammerChild->ang[0] = 0x4000;
+			}
 		}
 		else {
 			hammer->ang[2] = 0;
-			hammerChild->ang[0] = 0;
+			if (hammerChild) {
+				hammerChild->ang[0] = 0;
+			}
 		}
 
 		if (MainCharObj2[pnum]->Speed.x >= 2.0 && MainCharObj1[pnum]->Action < 3 || curAnim == HammerJumpStartAnim || curAnim >= HammerAttackAnim && curAnim <= HammerSpinAnim) {
@@ -67,14 +75,16 @@ void DisplayUpgrade() {
 		}
 	}
 
-	NJS_OBJECT* warrior = CharacterModels[500].Model;
+	if (isSA1Amy()) {
+		NJS_OBJECT* warrior = CharacterModels[500].Model;
 
-	if (warrior) {
-		njPushMatrixEx();
-		memcpy(_nj_current_matrix_ptr_, &AmyHeadMatrix, 0x30u);
-		njTranslate(nullptr, -0.5f, 0.1f, 0.0f);
-		DrawObject(warrior);
-		njPopMatrixEx();
+		if (warrior) {
+			njPushMatrixEx();
+			memcpy(_nj_current_matrix_ptr_, &AmyHeadMatrix, 0x30u);
+			njTranslate(nullptr, -0.5f, 0.1f, 0.0f);
+			DrawObject(warrior);
+			njPopMatrixEx();
+		}
 	}
 
 
@@ -82,7 +92,6 @@ void DisplayUpgrade() {
 }
 
 void Upgrades_Init() {
-
 
 	Amy_Callback_t = new Trampoline((int)0x71F040, (int)0x71F049, Amy_Callback_r);
 	WriteCall((void*)0x720698, DisplayUpgrade);

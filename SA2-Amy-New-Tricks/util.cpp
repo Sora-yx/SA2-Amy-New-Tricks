@@ -199,3 +199,27 @@ void njGetTranslation(NJS_MATRIX_PTR matrix, NJS_VECTOR* out)
 	out->y = matrix[7];
 	out->z = matrix[11];
 }
+
+bool isSA1Amy() {
+	HMODULE sa1Amy = GetModuleHandle(L"SA1-Amy");
+
+	if (sa1Amy)
+		return true;
+
+	return false;
+}
+
+bool isAmyAttacking() {
+
+	EntityData1* data1 = MainCharObj1[0];
+
+	if (!data1 || MainCharObj2[0]->CharID2 != Characters_Amy)
+		return false;
+
+	if (data1->Action >= HammerAttack) {
+
+		return true;
+	}
+
+	return false;
+}

@@ -22,5 +22,8 @@ void DoAmyHammerAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base
 void Upgrades_Init();
 void njGetTranslation(NJS_MATRIX_PTR matrix, NJS_VECTOR* out);
 void AmySetHammerScale(CharObj2Base* a1);
+bool isSA1Amy();
+bool isAmyAttacking();
+void Init_ObjectsHack();
 
 #define STATUS_FLOOR (Status_Ground | Status_OnObjectColli)

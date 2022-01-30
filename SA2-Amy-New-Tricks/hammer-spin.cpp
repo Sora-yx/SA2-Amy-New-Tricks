@@ -11,6 +11,7 @@ int AmySpinAttack_Check(CharObj2Base* co2, EntityData1* data)
         return 0;
     }
 
+    data->Status &= ~Status_Ball;
     data->Action = HammerSpin;
     co2->AnimInfo.Next = HammerSpinSetAnim;
     VibeThing(0, 15, 0, 6);

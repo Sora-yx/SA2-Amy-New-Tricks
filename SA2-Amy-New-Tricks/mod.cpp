@@ -21,6 +21,7 @@ extern "C" {
 		Init_AmyAnim();
 		Upgrades_Init();
 		init_BassSound();
+		Init_ObjectsHack();
 	}
 
 	__declspec(dllexport) void __cdecl OnFrame() {
