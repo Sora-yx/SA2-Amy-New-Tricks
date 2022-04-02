@@ -6,11 +6,14 @@ Trampoline* DynamiteHiddenBase_t;
 Trampoline* DynamiteSandOcean_t;
 Trampoline* MetalBox_t;
 Trampoline* MetalBoxGravity_t;
+Trampoline* RoadObjMain_t = nullptr;
+
 
 Bool __cdecl CheckBreakObject_r(ObjectMaster* obj, ObjectMaster* other)
 {
+	EntityData1* data = obj->Data1.Entity;
 
-	if (isAmyAttacking() && GetCollidingPlayer(obj))
+	if (checkAmyColAndAttack(obj, data))
 		return 1;
 
 	FunctionPointer(Bool, original, (ObjectMaster * obj, ObjectMaster * other), CheckBreakObject_t->Target());
@@ -23,7 +26,7 @@ void CheckBreakDynamite(ObjectMaster* obj) {
 	EntityData1* data = obj->Data1.Entity;
 
 	if (obj) {
-		if (data->Action == 0 && isAmyAttacking() && GetCollidingPlayer(obj)) {
+		if (data->Action == 0 && checkAmyColAndAttack(obj, data)) {
 			data->Status |= 4u;
 			obj->EntityData2->gap_44[0] = 0;
 		}
@@ -38,7 +41,7 @@ void CheckBreakDynamiteHiddenBase(ObjectMaster* obj) {
 	EntityData1* data = obj->Data1.Entity;
 
 	if (obj) {
-		if (data->NextAction != 7 && isAmyAttacking() && GetCollidingPlayer(obj)) {
+		if (data->NextAction != 7 && (checkAmyColAndAttack(obj, data))) {
 			data->field_6 = 0;
 			data->NextAction = 7;
 		}
@@ -53,7 +56,7 @@ void CheckBreakDynamiteSandOcean(ObjectMaster* obj) {
 	EntityData1* data = obj->Data1.Entity;
 
 	if (obj) {
-		if (data->Action == 0 && isAmyAttacking() && GetCollidingPlayer(obj)) {
+		if (data->Action == 0 && (checkAmyColAndAttack(obj, data))) {
 			data->Status |= 4u;
 			obj->EntityData2->gap_44[0] = 0;
 		}
@@ -68,7 +71,7 @@ void MetalBox_r(ObjectMaster* obj) {
 
 	EntityData1* data = obj->Data1.Entity;
 
-	if (GetCollidingPlayer(obj) && isAmyAttacking() && data->NextAction < 1)
+	if (checkAmyColAndAttack(obj, data) && data->NextAction < 1)
 	{
 		data->Collision->CollisionArray->push |= 0x4000u;
 		data->field_6 = 1;
@@ -86,7 +89,7 @@ void MetalBoxGravity_r(ObjectMaster* obj) {
 
 	EntityData1* data = obj->Data1.Entity;
 
-	if (GetCollidingPlayer(obj) && isAmyAttacking() && data->NextAction < 1)
+	if (checkAmyColAndAttack(obj, data) && data->NextAction < 1)
 	{
 		data->Collision->CollisionArray->push |= 0x4000u;
 		data->field_6 = 1;
@@ -99,6 +102,19 @@ void MetalBoxGravity_r(ObjectMaster* obj) {
 	origin(obj);
 }
 
+void RoadObjMain_r(ObjectMaster* obj)
+{
+	EntityData1* data = obj->Data1.Entity;
+
+	if (checkAmyColAndAttack(obj, data) && !data->NextAction)
+	{
+		data->NextAction++;
+	}
+
+	ObjectFunc(origin, RoadObjMain_t->Target());
+	origin(obj);
+}
+
 void Init_ObjectsHack() {
 	CheckBreakObject_t = new Trampoline((int)CheckBreakObject, (int)CheckBreakObject + 0x7, CheckBreakObject_r);
 	Dynamite_t = new Trampoline((int)Dynamite_Main, (int)Dynamite_Main + 0x5, CheckBreakDynamite);
@@ -108,5 +124,7 @@ void Init_ObjectsHack() {
 
 	MetalBox_t = new Trampoline((int)MetalBox, (int)MetalBox + 0x6, MetalBox_r);
 	MetalBoxGravity_t = new Trampoline((int)MetalBoxGravity, (int)MetalBoxGravity + 0x6, MetalBoxGravity_r);
+
+	RoadObjMain_t = new Trampoline((int)0x5B0ED0, (int)0x5B0ED5, RoadObjMain_r);
 
 }

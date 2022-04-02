@@ -210,16 +210,37 @@ bool isSA1Amy() {
 }
 
 
-bool isAmyAttacking() {
+bool isAmyAttacking(char pNum) {
 
-	EntityData1* data1 = MainCharObj1[0];
+	EntityData1* data1 = MainCharObj1[pNum];
 
-	if (!data1 || MainCharObj2[0]->CharID2 != Characters_Amy)
+	if (!data1 || MainCharObj2[pNum]->CharID2 != Characters_Amy)
 		return false;
 
 	if (data1->Action >= HammerAttack) {
 
 		return true;
+	}
+
+	return false;
+}
+
+bool checkAmyColAndAttack(ObjectMaster* obj, EntityData1* data)
+{
+	if (data)
+	{
+		if (data->Collision) {
+
+			if (data->Collision->CollidingObject) {
+
+				char pnum = GetPlayerNumber(data->Collision->CollidingObject->Object);
+
+				if (isAmyAttacking(pnum))
+				{
+					return true;
+				}
+			}
+		}
 	}
 
 	return false;

@@ -23,7 +23,8 @@ void Upgrades_Init();
 void njGetTranslation(NJS_MATRIX_PTR matrix, NJS_VECTOR* out);
 void AmySetHammerScale(CharObj2Base* a1);
 bool isSA1Amy();
-bool isAmyAttacking();
 void Init_ObjectsHack();
+bool isAmyAttacking(char pNum);
+bool checkAmyColAndAttack(ObjectMaster* obj, EntityData1* data);
 
 #define STATUS_FLOOR (Status_Ground | Status_OnObjectColli)
