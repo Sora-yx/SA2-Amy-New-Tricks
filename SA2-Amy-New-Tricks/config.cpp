@@ -3,6 +3,7 @@
 int bird = flicky;
 bool grunt = false;
 bool hammerRot = false;
+bool amyAdventure = false;
 
 void ReadConfig(const char* path) {
 
@@ -10,6 +11,7 @@ void ReadConfig(const char* path) {
 	grunt = config->getBool("General", "grunt", false);
 	bird = config->getInt("General", "bird", randomFlicky);
 	hammerRot = config->getBool("General", "hammerRot", false);
+	amyAdventure = config->getBool("General", "amyAdventure", false);
 
 	const auto physics = new IniFile(std::string(path) + "\\physics.ini");
 

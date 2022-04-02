@@ -47,14 +47,17 @@ void AmySetHammerScale(CharObj2Base* a1) {
 
 void AmySetAttackColli(SonicCharObj2* sonicCO2, CharObj2Base* a1, EntityData1* data)
 {
-	CollisionInfo* ColInfo; // eax
-	CollisionData* v4; // ebp
-	char v5; // cl
-	char v6; // al
-	Vector3 a2a; // [esp+10h] [ebp-Ch] BYREF
+
+
+
 	NJS_VECTOR pos;
 
 	int curAnim = a1->AnimInfo.Current;
+	CollisionInfo* col = data->Collision;
+	CollisionData* ColArray = col->CollisionArray;
+	int flag1 = 1;
+	int flag2 = 1;
+	int resultFlag;
 
 	switch (curAnim)
 	{
@@ -67,6 +70,9 @@ void AmySetAttackColli(SonicCharObj2* sonicCO2, CharObj2Base* a1, EntityData1* d
 		data->Collision->CollisionArray->damage |= 0xCu;
 		data->Collision->CollisionArray[1].attr &= 0xFFFFFFEF;
 		data->Collision->CollisionArray[1].param1 = 10.0;
+
+		resultFlag = flag1 & 3 | ColArray->damage & 0xF0 | (4 * (flag2 & 3));
+		ColArray->damage = resultFlag;
 		data->Status |= Status_Attack;
 
 		//move Amy's collision to her hammer Credits: Kell 
@@ -76,8 +82,7 @@ void AmySetAttackColli(SonicCharObj2* sonicCO2, CharObj2Base* a1, EntityData1* d
 		if (curAnim == HammerSpinAnim || curAnim == HammerSpinSetAnim) {
 			pos.y -= 10.0f;
 		}
-		
-		
+			
 		njPushMatrix((NJS_MATRIX_PTR)0x1A51A3C); // Right hand matrix
 		njCalcPointR(CUR_MATRIX, &pos, &pos, 0);
 		njCalcPointR((NJS_MATRIX_PTR)0x1A51A00, &pos, &pos, 0); // Base matrix

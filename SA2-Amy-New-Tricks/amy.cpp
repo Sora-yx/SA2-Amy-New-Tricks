@@ -10,6 +10,7 @@ NJS_TEXNAME AmyEff_Tex[4]{};
 NJS_TEXLIST AmyEff_TEXLIST = { arrayptrandlength(AmyEff_Tex, Uint32) };
 
 ModelInfo* WaveMdl = nullptr;
+Trampoline* Load_Sonic_t = nullptr;
 
 static bool CheckHomingAttack(EntityData1* data, CharObj2Base* co2, SonicCharObj2* SonicCO2, EntityData2* data2)
 {
@@ -174,7 +175,7 @@ void Amy_NewMoves_Main(ObjectMaster* tsk) {
 		PResetAngle(data, co2);
 		if (!PResetAccelerationAir(mwp, data, co2))
 		{
-			PGetAccelerationAir(data, co2, mwp);
+PGetAccelerationAir(data, co2, mwp);
 		}
 		PGetSpeed(data, co2, mwp);
 		PSetPosition(data, mwp, co2);
@@ -253,23 +254,54 @@ void Amy_Delete_R(ObjectMaster* obj)
 	origin(obj);
 }
 
+int BannedAmyLevel[5] = { LevelIDs_FinalHazard, LevelIDs_Route101280, LevelIDs_KartRace, LevelIDs_TailsVsEggman1, LevelIDs_TailsVsEggman2 };
+
+bool isLevelBanned() {
+	for (int i = 0; i < LengthOfArray(BannedAmyLevel); i++)
+	{
+		if (CurrentLevel == BannedAmyLevel[i])
+			return true;
+	}
+
+	return false;
+}
+
 void LoadCharacter_r() {
+
+	if (!isLevelBanned() && amyAdventure && !TwoPlayerMode)
+	{
+		CurrentCharacter = Characters_Sonic;
+	}
 
 	auto original = reinterpret_cast<decltype(LoadCharacter_r)*>(LoadCharacters_t->Target());
 	original();
 
 	for (int i = 0; i < 2; i++) {
 		if (MainCharObj2[i]) {
+
 			if (MainCharObj2[i]->CharID2 == Characters_Amy)
 			{
 				Load_AmyNewAnim();
 				Load_AmyEffText();
 				break;
 			}
+
 		}
 	}
 
 	return;
+}
+
+void LoadSonic_r(int playNum)
+{
+	if (!TwoPlayerMode && !playNum && !isLevelBanned())
+	{
+		LoadAmy(playNum);
+		return;
+	}
+
+	FunctionPointer(void, original, (int playerNum), Load_Sonic_t->Target());
+	return original(playNum);
 }
 
 void Amy_Init()
@@ -278,5 +310,9 @@ void Amy_Init()
 	Amy_runsActions_t = new Trampoline((int)Sonic_runsActions, (int)Sonic_runsActions + 0x8, Amy_runsActions_r);
 	Amy_delete_t = new Trampoline((int)Sonic_Delete, (int)Sonic_Delete + 0x5, Amy_Delete_R);
 	LoadCharacters_t = new Trampoline((int)LoadCharacters, (int)LoadCharacters + 0x6, LoadCharacter_r);
+
+	if (amyAdventure)
+		Load_Sonic_t = new Trampoline((int)LoadSonic, (int)LoadSonic + 0x6, LoadSonic_r);
+
 	return;
 }
