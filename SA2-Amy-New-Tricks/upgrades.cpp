@@ -56,22 +56,17 @@ void DisplayUpgrade() {
 		}
 		else if (curAnim == HammerSpinAnim) {
 
-			if (isSA1Amy()) {
+			hammer->ang[0] = 0x4000;
+			hammer->ang[2] = MainCharObj1[pnum]->Rotation.z + 0x3000;
 
-				hammer->ang[2] = MainCharObj1[pnum]->Rotation.z + 0x3000;
-				if (hammerChild) {
-					hammerChild->ang[0] = 0x4000;
-				}
+			if (hammerChild) {
+
+				hammerChild->ang[0] = 0x4000;
 			}
-			else 
-			{
-				if (hammerChild) {
-					hammerChild->ang[0] = 0x3000;
-					hammerChild->ang[1] = -0x4000;
-				}
-			}
+
 		}
 		else {
+			hammer->ang[0] = 0;
 			hammer->ang[2] = 0;
 			if (hammerChild) {
 				hammerChild->ang[0] = 0;

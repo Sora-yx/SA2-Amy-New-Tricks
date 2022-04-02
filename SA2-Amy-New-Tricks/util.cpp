@@ -209,6 +209,7 @@ bool isSA1Amy() {
 	return false;
 }
 
+
 bool isAmyAttacking() {
 
 	EntityData1* data1 = MainCharObj1[0];

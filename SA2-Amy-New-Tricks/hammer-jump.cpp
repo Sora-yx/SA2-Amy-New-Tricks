@@ -26,7 +26,7 @@ void DoAmyHammerJump(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base* 
 	{
 		PlayCustomSound(SE_HammerAttack);
 		data1->Status = Status_Attack;
-		co2->Speed.y = co2->PhysData.JumpSpeed * 2.8;
+		co2->Speed.y = co2->PhysData.JumpSpeed * 2.9;
 		Do_HammerWaveHeartEffect(data1);
 		return;
 	}

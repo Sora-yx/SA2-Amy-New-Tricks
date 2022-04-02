@@ -11,6 +11,44 @@ NJS_TEXLIST AmyEff_TEXLIST = { arrayptrandlength(AmyEff_Tex, Uint32) };
 
 ModelInfo* WaveMdl = nullptr;
 
+static bool CheckHomingAttack(EntityData1* data, CharObj2Base* co2, SonicCharObj2* SonicCO2, EntityData2* data2)
+{
+	if (!data || data->Action != HammerJump)
+		return false;
+
+	if ((data->Status & Status_DisableControl) == 0)
+	{
+		if (Jump_Pressed[co2->PlayerNum])
+		{
+
+			float gravity = fabs(Gravity.y);
+			if (gravity == flt_1283704)
+			{
+				float spd = fabs(co2->SurfaceInfo.BottomSurfaceDist - data->Position.y);
+
+				if (spd <= 8.0)
+				{
+					return false;
+				}
+			}
+			DoHomingAttackEffect(SonicCO2, data, data2, co2);
+			data->Action = Action_HomingAttack;
+			if (SonicCO2->gap35E[6] <= 0) {
+
+				data->Status |= Status_Attack | Status_Ball;
+			}
+			else
+			{
+				co2->AnimInfo.Next = 100;
+				data->Status &= 0xFEFFu;
+			}
+			return true;
+		}
+	}
+
+	return false;
+}
+
 static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityData2* mwp, CharObj2Base* co2)
 {
 	if ((!data) || co2->CharID2 != Characters_Amy)
@@ -47,12 +85,25 @@ static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityDat
 	case Action_Spring:
 	case Action_Launch:
 
+		if (Sonic_CheckNextAction(SonicCO2, data, mwp, co2))
+			return;
+
 		if (AmyProp_Check(data, co2))
 			return;
 
 		break;
 	case Action_Jump:
+		if (AmyProp_Check(data, co2))
+			return;
+
+		if (AmyAirAttack_Check(co2, data))
+			return;
+
+		break;
 	case Action_Fall:
+
+		if (Sonic_CheckNextAction(SonicCO2, data, mwp, co2))
+			return;
 
 		if (AmyProp_Check(data, co2))
 			return;
@@ -68,7 +119,8 @@ static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityDat
 		DoAmyAirAttack(SonicCO2, data, co2, mwp);
 		break;
 	case HammerJump:
-		if (AmyProp_Check(data, co2))
+
+		if (Sonic_CheckNextAction(SonicCO2, data, mwp, co2) || AmyProp_Check(data, co2) || CheckHomingAttack(data, co2, SonicCO2, mwp))
 			return;
 
 		DoAmyHammerJump(SonicCO2, data, co2, mwp);
@@ -78,6 +130,10 @@ static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityDat
 		AmyMovingSpin(data, mwp, co2);
 		break;
 	case HammerProp:
+
+		if (Sonic_CheckNextAction(SonicCO2, data, mwp, co2))
+			return;
+
 		AmyProp_Run(SonicCO2, data, mwp, co2);
 		break;
 	}

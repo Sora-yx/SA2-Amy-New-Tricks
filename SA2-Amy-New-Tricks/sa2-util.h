@@ -124,3 +124,18 @@ DataPointer(NJS_MATRIX, AmyRightHandMatrix, 0x1A51A3C);
 ObjectFunc(MetalBox, 0x6D6490);
 ObjectFunc(MetalBoxGravity, 0x77BB90);
 DataPointer(char, VoiceLanguage, 0x174AFD2);
+DataPointer(float, flt_1283704, 0x1283704);
+
+static const void* const DoHomingAttackEffectPtr = (void*)0x720E00;
+static inline void DoHomingAttackEffect(SonicCharObj2* sCo2, EntityData1* a2, EntityData2* a3, CharObj2Base* co2)
+{
+	__asm
+	{
+		push[co2]
+		push[a3]
+		push[a2]
+		mov ebx, sCo2
+		call DoHomingAttackEffectPtr
+		add esp, 12
+	}
+}
