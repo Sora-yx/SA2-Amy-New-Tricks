@@ -114,9 +114,17 @@ static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityDat
 
 		break;
 	case HammerAttack:
+
+		if (Sonic_CheckNextAction(SonicCO2, data, mwp, co2))
+			return;
+
 		DoAmyHammerAttack(SonicCO2, data, co2, mwp);
 		break;
 	case HammerAir:
+
+		if (Sonic_CheckNextAction(SonicCO2, data, mwp, co2))
+			return;
+
 		DoAmyAirAttack(SonicCO2, data, co2, mwp);
 		break;
 	case HammerJump:
@@ -127,6 +135,11 @@ static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityDat
 		DoAmyHammerJump(SonicCO2, data, co2, mwp);
 		break;
 	case HammerSpin:
+
+
+		if (Sonic_CheckNextAction(SonicCO2, data, mwp, co2))
+			return;
+
 		DoAmySpinAttack(SonicCO2, data, co2, mwp);
 		AmyMovingSpin(data, mwp, co2);
 		break;
@@ -175,7 +188,7 @@ void Amy_NewMoves_Main(ObjectMaster* tsk) {
 		PResetAngle(data, co2);
 		if (!PResetAccelerationAir(mwp, data, co2))
 		{
-PGetAccelerationAir(data, co2, mwp);
+			PGetAccelerationAir(data, co2, mwp);
 		}
 		PGetSpeed(data, co2, mwp);
 		PSetPosition(data, mwp, co2);
