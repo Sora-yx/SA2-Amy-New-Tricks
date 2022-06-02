@@ -48,8 +48,6 @@ void AmySetHammerScale(CharObj2Base* a1) {
 void AmySetAttackColli(SonicCharObj2* sonicCO2, CharObj2Base* a1, EntityData1* data)
 {
 
-
-
 	NJS_VECTOR pos;
 
 	int curAnim = a1->AnimInfo.Current;

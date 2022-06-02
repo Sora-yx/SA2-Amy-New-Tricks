@@ -52,7 +52,7 @@ static bool CheckHomingAttack(EntityData1* data, CharObj2Base* co2, SonicCharObj
 
 static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityData2* mwp, CharObj2Base* co2)
 {
-	if ((!data) || co2->CharID2 != Characters_Amy)
+	if ((!data) || co2->CharID2 != Characters_Amy || CurrentLevel == LevelIDs_ChaoWorld)
 		return;
 
 	switch (data->Action)
@@ -86,14 +86,13 @@ static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityDat
 	case Action_Spring:
 	case Action_Launch:
 
-		if (Sonic_CheckNextAction(SonicCO2, data, mwp, co2))
-			return;
 
 		if (AmyProp_Check(data, co2))
 			return;
 
 		break;
 	case Action_Jump:
+
 		if (AmyProp_Check(data, co2))
 			return;
 
@@ -114,11 +113,16 @@ static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityDat
 
 		break;
 	case HammerAttack:
+	{
+
+		int toto = LightDashAllowed(data, co2);
+		toto = toto;
 
 		if (Sonic_CheckNextAction(SonicCO2, data, mwp, co2))
 			return;
 
 		DoAmyHammerAttack(SonicCO2, data, co2, mwp);
+	}
 		break;
 	case HammerAir:
 
@@ -135,7 +139,6 @@ static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityDat
 		DoAmyHammerJump(SonicCO2, data, co2, mwp);
 		break;
 	case HammerSpin:
-
 
 		if (Sonic_CheckNextAction(SonicCO2, data, mwp, co2))
 			return;
@@ -244,8 +247,10 @@ static void Amy_Exec_r(ObjectMaster* tsk)
 	EntityData1* data = MainCharObj1[pnum];
 	SonicCharObj2* SonicCO2 = (SonicCharObj2*)tsk->Data2.Undefined;
 
-	AmySetHammerScale(co2);
-	AmySetAttackColli(SonicCO2, co2, data);
+	if (co2->CharID2 == Characters_Amy) {
+		AmySetHammerScale(co2);
+		AmySetAttackColli(SonicCO2, co2, data);
+	}
 }
 
 void Load_AmyEffText() {

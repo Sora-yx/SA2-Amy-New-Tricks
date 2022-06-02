@@ -245,3 +245,18 @@ bool checkAmyColAndAttack(ObjectMaster* obj, EntityData1* data)
 
 	return false;
 }
+
+int CheckLightDashAllowed(EntityData1* data, CharObj2Base* co2)
+{
+	int result; // eax
+
+	if ((co2->Upgrades & (Upgrades_ShadowAirShoes | Upgrades_SonicLightShoes)) == 0
+		|| (data->Status & Status_HoldObject) != 0
+		|| data->Action >= 59)
+	{
+		return 0;
+	}
+	result = 1;
+	co2->ActionWindowItems[co2->ActionWindowItemCount++ & 7] = 59;
+	return result;
+}

@@ -139,3 +139,19 @@ static inline void DoHomingAttackEffect(SonicCharObj2* sCo2, EntityData1* a2, En
 		add esp, 12
 	}
 }
+
+static const void* const LightDashEffectPtr = (void*)0x723FC0;
+static inline int LightDashAllowed(EntityData1* a1, CharObj2Base* a2)
+{
+	int result;
+	__asm
+	{
+		mov esi, [a2]
+		mov eax, [a1]
+		call LightDashEffectPtr
+		mov result, eax
+	}
+
+	return result;
+}
+
