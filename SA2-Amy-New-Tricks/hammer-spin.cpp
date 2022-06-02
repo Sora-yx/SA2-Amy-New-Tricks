@@ -71,7 +71,7 @@ void DoAmySpinAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base* 
                 waveData->Position = data1->Position;
                 waveData->Position.y = co2->PhysData.Height * 0.5 + waveData->Position.y;
                 waveData->Rotation = data1->Rotation;
-                waveData->field_6 = 4;
+                waveData->Timer = 4;
                 waveData->Index = 0;
             }
         }

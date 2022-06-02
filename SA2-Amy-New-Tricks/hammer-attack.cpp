@@ -3,7 +3,8 @@
 
 signed int AmyCheckHammerAttack(EntityData1* data1, CharObj2Base* co2) {
 
-	if ((Controllers[co2->PlayerNum].press & HammerAttackButton) == 0 || co2->CharID2 != Characters_Amy || !HammerAttackButton)
+	if ((Controllers[co2->PlayerNum].press & HammerAttackButton) == 0 || co2->CharID2 != Characters_Amy || !HammerAttackButton
+		|| LightDashAllowed(data1, co2))
 	{
 		return 0;
 	}
@@ -29,7 +30,7 @@ void DoAmyHammerAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base
 
 	short curAnimHammer = co2->AnimInfo.Current;
 
-	if (curAnimHammer == HammerAttackAnim && co2->AnimInfo.field_10 >= 3.0 && co2->AnimInfo.field_10 < 4.0)
+	if (curAnimHammer == HammerAttackAnim && co2->AnimInfo.nframe >= 3.0 && co2->AnimInfo.nframe < 4.0)
 	{
 		Do_HammerWaveHeartEffect(data1);
 	}

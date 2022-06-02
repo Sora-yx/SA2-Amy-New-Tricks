@@ -17,7 +17,7 @@ void __cdecl AmyEffectSpdDwnHeartDisplayer(ObjectMaster* a1)
 
 	njPushMatrix(0);
 	njTranslateV(0, &data->Position);
-	NJDrawSprite3D(0, &sprite_amy_heart, NJD_SPRITE_ALPHA | NJD_SPRITE_SCALE | NJD_SPRITE_COLOR);
+	njDrawSprite3D(0, &sprite_amy_heart, NJD_SPRITE_ALPHA | NJD_SPRITE_SCALE | NJD_SPRITE_COLOR);
 	njPopMatrix(1u);
 	ResetMaterial();
 }
@@ -54,35 +54,35 @@ void __cdecl AmyEffectSpdDwnHeart(ObjectMaster* a1)
 void __cdecl AmyEffectPutSpdDwnHeart(NJS_POINT3* pos)
 {
 	ObjectMaster* HeartObj;
-	double v2;
+	float v2;
 	long double v3;
 	float v5;
-	Vector3 result; 
+	NJS_VECTOR result; 
 
 	HeartObj = LoadObject(2, "AmyEffectSpdHeart", AmyEffectSpdDwnHeart, 10);
 	if (HeartObj)
 	{
-		result.x = (double)rand() * 0.000030517578 - 0.5;
-		result.y = (double)rand() * 0.000030517578 - 0.5;
-		result.z = (double)rand() * 0.000030517578 - 0.5;
-		if (njScalor(&result) == 0.0)
+		result.x = (double)rand() * 0.000030517578f - 0.5f;
+		result.y = (double)rand() * 0.000030517578f - 0.5f;
+		result.z = (double)rand() * 0.000030517578f - 0.5f;
+		if (njScalor(&result) == 0.0f)
 		{
-			v2 = 1.0;
-			result.z = 0.0;
-			result.y = 0.0;
+			v2 = 1.0f;
+			result.z = 0.0f;
+			result.y = 0.0f;
 		}
 		else
 		{
 			v3 = sqrt(result.z * result.z + result.y * result.y + result.x * result.x);
-			if (v3 == 0.0)
+			if (v3 == 0.0f)
 			{
-				result.z = 0.0;
-				v2 = 0.0;
-				result.y = 0.0;
+				result.z = 0.0f;
+				v2 = 0.0f;
+				result.y = 0.0f;
 			}
 			else
 			{
-				v5 = 1.0 / v3;
+				v5 = 1.0f / v3;
 				v2 = v5 * result.x;
 				result.y = v5 * result.y;
 				result.z = v5 * result.z;
@@ -90,9 +90,9 @@ void __cdecl AmyEffectPutSpdDwnHeart(NJS_POINT3* pos)
 		}
 
 		EntityData1* data = HeartObj->Data1.Entity;
-		data->Scale.x = v2 * 0.25;
-		data->Scale.y = result.y * 0.25;
-		data->Scale.z = result.z * 0.25;
+		data->Scale.x = v2 * 0.25f;
+		data->Scale.y = result.y * 0.25f;
+		data->Scale.z = result.z * 0.25f;
 		HeartObj->DisplaySub_Delayed2 = AmyEffectSpdDwnHeartDisplayer;
 		data->Position = *pos;
 	}
@@ -118,28 +118,28 @@ void __cdecl HammerWaveColorDisplayer(ObjectMaster* a1)
 
 void AmyEffectHammerWaveColor(ObjectMaster* tp)
 {
-	double calcWave;
-	double result; 
-	double scaleX;
+	float calcWave;
+	float result; 
+	float scaleX;
 
 	EntityData1* data = tp->Data1.Entity;
 	EntityData2* data2 = tp->Data2.Entity;
 
 	if (!data->Action)
 	{
-		data->Scale.x = 3.0;
+		data->Scale.x = 3.0f;
 		data->Action = 1;
-		data2->Velocity.x = 1.0;
+		data2->Velocity.x = 1.0f;
 		tp->DisplaySub_Delayed2 = HammerWaveColorDisplayer;
 	}
-	calcWave = (float)(data2->Velocity.x - (float)0.033333335);
-	data2->Velocity.x = data2->Velocity.x - (float)0.033333335;
+	calcWave = (float)(data2->Velocity.x - (float)0.033333335f);
+	data2->Velocity.x = data2->Velocity.x - (float)0.033333335f;
 	if (calcWave >= 0.0)
 	{
 		data->Scale.x = data->Scale.x + (float)0.5;
-		result = njSin((int)(float)((float)calcWave * (float)32768.0));
+		result = njSin((int)(float)((float)calcWave * (float)32768.0f));
 		scaleX = data->Scale.x;
-		data->Scale.y = (float)result * (float)3.0;
+		data->Scale.y = (float)result * (float)3.0f;
 		data->Scale.z = scaleX;
 	}
 	else
@@ -157,8 +157,8 @@ void __cdecl AmyEffectFallHeartDisplayer(ObjectMaster* a1)
 	EntityData2* data2 = a1->Data2.Entity;
 
 	njSetTexture(&AmyEff_TEXLIST);
-	float r = 1.0 - data2->Velocity.x;
-	SetMaterial(r, 1.0, 1.0, 1.0);
+	float r = 1.0f - data2->Velocity.x;
+	SetMaterial(r, 1.0f, 1.0f, 1.0f);
 
 	njPushMatrix(0);
 	njTranslateV(0, &data->Position);
@@ -170,14 +170,14 @@ void __cdecl AmyEffectFallHeartDisplayer(ObjectMaster* a1)
 
 	njRotateZ_(0, (unsigned __int16)rotZ);
 	
-	NJDrawSprite3D(0, &sprite_amy_heart, NJD_SPRITE_ALPHA | NJD_SPRITE_COLOR);
+	njDrawSprite3D(0, &sprite_amy_heart, NJD_SPRITE_ALPHA | NJD_SPRITE_COLOR);
 	njPopMatrix(1u);
 	ResetMaterial();
 }
 
 void __cdecl AmyEffectFallHeart(ObjectMaster* a1)
 {
-	double sclY; 
+	float sclY; 
 	Angle rotZ; 
 	Angle rotX; 
 	Angle result; 
@@ -185,12 +185,12 @@ void __cdecl AmyEffectFallHeart(ObjectMaster* a1)
 	EntityData1* data = a1->Data1.Entity;
 	EntityData2* data2 = a1->Data2.Entity;
 
-	double resultEff = data2->Velocity.x + 0.033333335;
+	float resultEff = data2->Velocity.x + 0.033333335f;
 	data2->Velocity.x = resultEff;
 
 	if (resultEff < 1.0)
 	{
-		sclY = data->Scale.y - 0.050000001;
+		sclY = data->Scale.y - 0.050000001f;
 		data->Rotation.y += 1024;
 		rotZ = data->Rotation.z;
 		data->Scale.y = sclY;
@@ -219,7 +219,7 @@ void __cdecl AmyEffectFallHeart(ObjectMaster* a1)
 void __cdecl AmyPutHammerWave(ObjectMaster* obj)
 {
 	EntityData1* data = obj->Data1.Entity;
-	if (--data->field_6)
+	if (--data->Timer)
 	{
 		unsigned __int8 index = data->Index;
 		if (index < 2u)
@@ -242,28 +242,28 @@ void __cdecl AmyPutHammerWave(ObjectMaster* obj)
 void __cdecl AmyEffectPutFallHeart(NJS_VECTOR heartPos, int rotX, int rotZ)
 {
 	int i;
-	Vector3 result;
-	Vector3 pos;
+	NJS_VECTOR result;
+	NJS_VECTOR pos;
 
 	njPushMatrix(_nj_unit_matrix_);
 	njRotateZ_(0, (unsigned __int16)rotZ);
 	njRotateX_(0, (unsigned __int16)rotX);
 	
-	pos.x = 0.43579999;
-	pos.y = 0.89999998;
-	pos.z = 0.0;
+	pos.x = 0.43579999f;
+	pos.y = 0.89999998f;
+	pos.z = 0.0f;
 	for (i = 0; i < 0x10000; i += 0x2000)
 	{
 		njRotateY(0, 0x2000);
-		njCalcPointR(CUR_MATRIX, &result, &pos, 0);
+		njCalcPoint(CUR_MATRIX, &result, &pos, 0);
 		ObjectMaster* obj = LoadObject(2, "AmyEffectFallHeart", AmyEffectFallHeart, 10);
 		if (obj)
 		{
 			EntityData1* data = obj->Data1.Entity;
 			data->Position = heartPos;
-			data->Position.x = result.x * 5.0 + data->Position.x;
-			data->Position.y = result.y * 5.0 + data->Position.y;
-			data->Position.z = result.z * 5.0 + data->Position.z;
+			data->Position.x = result.x * 5.0f + data->Position.x;
+			data->Position.y = result.y * 5.0f + data->Position.y;
+			data->Position.z = result.z * 5.0f + data->Position.z;
 			data->Scale = result;
 			data->Rotation.y = i;
 			data->Rotation.z = 28672;
@@ -282,9 +282,9 @@ void Do_HammerWaveHeartEffect(EntityData1* data1) {
 
 	if (hammerWave)
 	{
-		vs.x = 15.0;
-		vs.z = 0.0;
-		vs.y = 0.0;
+		vs.x = 15.0f;
+		vs.z = 0.0f;
+		vs.y = 0.0f;
 		njPushMatrix(_nj_unit_matrix_);
 		njRotateZ_(CUR_MATRIX, data1->Rotation.z);
 		njRotateX_(CUR_MATRIX, data1->Rotation.x);
@@ -298,7 +298,7 @@ void Do_HammerWaveHeartEffect(EntityData1* data1) {
 		hammerWave->Data1.Entity->Position.z = result.z + data1->Position.z;
 		hammerWave->Data1.Entity->Rotation.x = data1->Rotation.x;
 		hammerWave->Data1.Entity->Rotation.z = data1->Rotation.z;
-		hammerWave->Data1.Entity->field_6 = 10;
+		hammerWave->Data1.Entity->Timer = 10;
 		hammerWave->Data1.Entity->Index = 1;
 		AmyEffectPutFallHeart(hammerWave->Data1.Entity->Position, data1->Rotation.x, data1->Rotation.z);
 	}

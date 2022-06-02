@@ -82,8 +82,8 @@ void AmySetAttackColli(SonicCharObj2* sonicCO2, CharObj2Base* a1, EntityData1* d
 		}
 			
 		njPushMatrix((NJS_MATRIX_PTR)0x1A51A3C); // Right hand matrix
-		njCalcPointR(CUR_MATRIX, &pos, &pos, 0);
-		njCalcPointR((NJS_MATRIX_PTR)0x1A51A00, &pos, &pos, 0); // Base matrix
+		njCalcPoint(CUR_MATRIX, &pos, &pos, 0);
+		njCalcPoint((NJS_MATRIX_PTR)0x1A51A00, &pos, &pos, 0); // Base matrix
 		njPopMatrixEx();
 
 		data->Collision->CollisionArray[1].center = pos;
@@ -168,7 +168,7 @@ void AmyProp_Run(SonicCharObj2* sonicCO2, EntityData1* data, EntityData2* data2,
 			waveData->Position = data->Position;
 			waveData->Position.y = co2->PhysData.Height * 0.5 + waveData->Position.y;
 			waveData->Rotation = data->Rotation;
-			waveData->field_6 = 4;
+			waveData->Timer = 4;
 			waveData->Index = 0;
 		}
 	}

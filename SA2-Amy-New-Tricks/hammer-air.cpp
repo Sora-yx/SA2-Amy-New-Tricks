@@ -2,7 +2,8 @@
 
 int AmyAirAttack_Check(CharObj2Base* co2, EntityData1* data)
 {
-    if ((Controllers[co2->PlayerNum].press & HammerAirButton) == 0 || co2->CharID2 != Characters_Amy || !HammerAirButton)
+    if ((Controllers[co2->PlayerNum].press & HammerAirButton) == 0 || co2->CharID2 != Characters_Amy || !HammerAirButton
+        || LightDashAllowed(data, co2))
     {
         return 0;
     }

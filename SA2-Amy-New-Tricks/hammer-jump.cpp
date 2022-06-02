@@ -3,7 +3,8 @@
 
 signed int AmyCheckHammerJump(EntityData1* data1, CharObj2Base* co2) {
 
-	if ((Controllers[co2->PlayerNum].press & HammerJumpButton) == 0 || co2->CharID2 != Characters_Amy || !HammerJumpButton)
+	if ((Controllers[co2->PlayerNum].press & HammerJumpButton) == 0 || co2->CharID2 != Characters_Amy || !HammerJumpButton
+		|| LightDashAllowed(data1, co2))
 	{
 		return 0;
 	}
@@ -22,11 +23,11 @@ void DoAmyHammerJump(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base* 
 		return;
 	}
 
-	if (co2->AnimInfo.Current == HammerJumpStartAnim && co2->AnimInfo.field_10 >= 5.0)
+	if (co2->AnimInfo.Current == HammerJumpStartAnim && co2->AnimInfo.nframe >= 5.0f)
 	{
 		PlayCustomSound(SE_HammerAttack);
 		data1->Status = Status_Attack;
-		co2->Speed.y = co2->PhysData.JumpSpeed * 2.9;
+		co2->Speed.y = co2->PhysData.JumpSpeed * 2.9f;
 		Do_HammerWaveHeartEffect(data1);
 		return;
 	}

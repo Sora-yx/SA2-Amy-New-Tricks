@@ -115,9 +115,6 @@ static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityDat
 	case HammerAttack:
 	{
 
-		int toto = LightDashAllowed(data, co2);
-		toto = toto;
-
 		if (Sonic_CheckNextAction(SonicCO2, data, mwp, co2))
 			return;
 
