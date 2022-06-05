@@ -269,7 +269,8 @@ void Amy_Delete_R(ObjectMaster* obj)
 	origin(obj);
 }
 
-int BannedAmyLevel[5] = { LevelIDs_FinalHazard, LevelIDs_Route101280, LevelIDs_KartRace, LevelIDs_TailsVsEggman1, LevelIDs_TailsVsEggman2 };
+int BannedAmyLevel[6] = { LevelIDs_FinalHazard, LevelIDs_Route101280, 
+LevelIDs_EggGolemE, LevelIDs_KartRace, LevelIDs_TailsVsEggman1, LevelIDs_TailsVsEggman2 };
 
 bool isLevelBanned() {
 	for (int i = 0; i < LengthOfArray(BannedAmyLevel); i++)
