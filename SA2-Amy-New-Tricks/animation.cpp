@@ -273,9 +273,9 @@ void Delete_AmyAnim() {
 
 void Load_AmyNewAnim() {
 
+	PrintDebug("[Amy New Trick]: Loading New Animations...\n");
 	AmyNewAnimList = LoadMTNFile((char*)"\\animations\\NewAmyMtn.prs");
-	PrintDebug("\n [Amy New Trick]: Loading New Animations...");
-
+	return;
 }
 
 void SetNewAnimList(int player) {

@@ -1,8 +1,7 @@
 #include "pch.h"
 
-static Trampoline* Amy_Callback_t;
+static Trampoline* Amy_Callback_t = nullptr;
 static NJS_MATRIX AmyHeadMatrix;
-
 
 NJS_MATRIX AmyHammerMatrix;
 
@@ -27,7 +26,7 @@ void Amy_Callback_r(NJS_OBJECT* model) {
 extern float hammerScale;
 void DisplayUpgrade() {
 
-	if (SonicCO2PtrExtern->base.CharID2 != Characters_Amy) {
+	if (!SonicCO2PtrExtern || SonicCO2PtrExtern->base.CharID2 != Characters_Amy) {
 		njPushMatrixEx();
 		return;
 	}
@@ -45,35 +44,43 @@ void DisplayUpgrade() {
 
 		NJS_OBJECT* hammerChild = CharacterModels[506].Model->child;
 
-		if (hammerChild) {
-			hammerChild->scl[0] = hammerScale;
-			hammerChild->scl[1] = hammerScale;
-			hammerChild->scl[2] = hammerScale;
-		}
+		if (!hammerChild)
+			return;
+
+		hammerChild->scl[0] = hammerScale;
+		hammerChild->scl[1] = hammerScale;
+		hammerChild->scl[2] = hammerScale;
 
 		if (curAnim == HammerSpinSetAnim) {
-			hammer->ang[2] = MainCharObj1[pnum]->Rotation.z + 0x500;
+
+			hammer->ang[2] = MainCharObj1[pnum]->Rotation.z + isSA1Amy() ? 0x500 : 0x4000;
+			hammerChild->ang[2] = hammer->ang[2];
 		}
 		else if (curAnim == HammerSpinAnim) {
 
-			hammer->ang[0] = 0x4000;
-			hammer->ang[2] = MainCharObj1[pnum]->Rotation.z + 0x3000;
-
-			if (hammerChild) {
-
-				hammerChild->ang[0] = 0x4000;
-			}
-
+			hammer->ang[0] = isSA1Amy() ? 0x4000 : 0x8000;
+			hammer->ang[2] = MainCharObj1[pnum]->Rotation.z + isSA1Amy() ? 0x3000 : -0x1000;
+			hammerChild->ang[0] = hammer->ang[0];
+			hammerChild->ang[2] = hammer->ang[2];
 		}
+
 		else {
-			hammer->ang[0] = 0;
-			hammer->ang[2] = 0;
-			if (hammerChild) {
+			if (!isSA1Amy()) {
+				hammer->ang[0] = 0;
+				hammer->ang[2] = 0;
 				hammerChild->ang[0] = 0;
+				hammerChild->ang[2] = 0x4000;
+			}
+			else
+			{
+				hammer->ang[0] = 0xFFFFFFD6;
+				hammer->ang[2] = 161;
+				hammerChild->ang[0] = 0;
+				hammerChild->ang[2] = 0x0;
 			}
 		}
 
-		if (MainCharObj2[pnum]->Speed.x >= 2.0 && MainCharObj1[pnum]->Action < 3 || curAnim == HammerJumpStartAnim || curAnim >= HammerAttackAnim && curAnim <= HammerSpinAnim) {
+		if (MainCharObj2[pnum]->Speed.x >= 2.0f && MainCharObj1[pnum]->Action < 3 || curAnim == HammerJumpStartAnim || curAnim >= HammerAttackAnim && curAnim <= HammerSpinAnim) {
 			njPushMatrixEx();
 			memcpy(CUR_MATRIX, &AmyRightHandMatrix, 0x30u);
 
