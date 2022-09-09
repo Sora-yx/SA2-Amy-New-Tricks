@@ -261,7 +261,7 @@ AnimationInfo AmyAnimationList_r[] = {
 	{ HammerJumpLoopAnim, 395, 65, 4, 1.12f, 1.0f },
 };
 
-AnimationIndex* AmyNewAnimList;
+AnimationIndex* AmyNewAnimList = nullptr;
 
 void Delete_AmyAnim() {
 	AnimationIndex* copy = AmyNewAnimList;
@@ -273,40 +273,9 @@ void Delete_AmyAnim() {
 
 void Load_AmyNewAnim() {
 
-	int id;
-	AnimationIndex* AmyNewAnim;
-	__int16 animIndex;
-	int indexCopy;
-	__int16 count;
-	NJS_MOTION* anim;
-
-	id = 0;
-
 	AmyNewAnimList = LoadMTNFile((char*)"\\animations\\NewAmyMtn.prs");
-	PrintDebug("\n [Amy New Trick]: Loading New Animation");
+	PrintDebug("\n [Amy New Trick]: Loading New Animations...");
 
-	//pretty sure this code below isn't needed and never reached, but just in case....
-	if (AmyNewAnimList[0].Index != 0xFFFF)
-	{
-		AmyNewAnim = AmyNewAnimList;
-		animIndex = AmyNewAnimList[0].Index;
-		do
-		{
-			if (animIndex >= 0 && animIndex < 300)
-			{
-				indexCopy = animIndex;
-				if (!CharacterAnimations[indexCopy].Animation)
-				{
-					count = AmyNewAnim->Count;
-					anim = AmyNewAnim->Animation;
-					CharacterAnimations[indexCopy].Count = count;
-					CharacterAnimations[indexCopy].Animation = anim;
-				}
-			}
-			animIndex = AmyNewAnimList[++id].Index;
-			AmyNewAnim = &AmyNewAnimList[id];
-		} while (animIndex != -1);
-	}
 }
 
 void SetNewAnimList(int player) {
