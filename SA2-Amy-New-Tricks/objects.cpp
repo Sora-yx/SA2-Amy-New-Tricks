@@ -13,7 +13,7 @@ Bool __cdecl CheckBreakObject_r(ObjectMaster* obj, ObjectMaster* other)
 {
 	EntityData1* data = obj->Data1.Entity;
 
-	if (checkAmyColAndAttack(obj, data))
+	if (checkAmyColAndAttack(data))
 		return 1;
 
 	FunctionPointer(Bool, original, (ObjectMaster * obj, ObjectMaster * other), CheckBreakObject_t->Target());
@@ -26,7 +26,7 @@ void CheckBreakDynamite(ObjectMaster* obj) {
 	EntityData1* data = obj->Data1.Entity;
 
 	if (obj) {
-		if (data->Action == 0 && checkAmyColAndAttack(obj, data)) {
+		if (data->Action == 0 && checkAmyColAndAttack(data)) {
 			data->Status |= 4u;
 			obj->EntityData2->gap_44[0] = 0;
 		}
@@ -41,7 +41,7 @@ void CheckBreakDynamiteHiddenBase(ObjectMaster* obj) {
 	EntityData1* data = obj->Data1.Entity;
 
 	if (obj) {
-		if (data->NextAction != 7 && (checkAmyColAndAttack(obj, data))) {
+		if (data->NextAction != 7 && (checkAmyColAndAttack(data))) {
 			data->Timer = 0;
 			data->NextAction = 7;
 		}
@@ -56,7 +56,7 @@ void CheckBreakDynamiteSandOcean(ObjectMaster* obj) {
 	EntityData1* data = obj->Data1.Entity;
 
 	if (obj) {
-		if (data->Action == 0 && (checkAmyColAndAttack(obj, data))) {
+		if (data->Action == 0 && (checkAmyColAndAttack(data))) {
 			data->Status |= 4u;
 			obj->EntityData2->gap_44[0] = 0;
 		}
@@ -71,7 +71,7 @@ void MetalBox_r(ObjectMaster* obj) {
 
 	EntityData1* data = obj->Data1.Entity;
 
-	if (checkAmyColAndAttack(obj, data) && data->NextAction < 1)
+	if (checkAmyColAndAttack(data) && data->NextAction < 1)
 	{
 		data->Collision->CollisionArray->push |= 0x4000u;
 		data->Timer = 1;
@@ -89,7 +89,7 @@ void MetalBoxGravity_r(ObjectMaster* obj) {
 
 	EntityData1* data = obj->Data1.Entity;
 
-	if (checkAmyColAndAttack(obj, data) && data->NextAction < 1)
+	if (checkAmyColAndAttack(data) && data->NextAction < 1)
 	{
 		data->Collision->CollisionArray->push |= 0x4000u;
 		data->Timer = 1;
@@ -106,7 +106,7 @@ void RoadObjMain_r(ObjectMaster* obj)
 {
 	EntityData1* data = obj->Data1.Entity;
 
-	if (checkAmyColAndAttack(obj, data) && !data->NextAction)
+	if (checkAmyColAndAttack(data) && !data->NextAction)
 	{
 		data->NextAction++;
 	}

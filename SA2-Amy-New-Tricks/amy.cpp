@@ -4,13 +4,13 @@
 static Trampoline* Amy_Exec_t = nullptr;
 static Trampoline* Amy_runsActions_t = nullptr;
 static Trampoline* Amy_delete_t = nullptr;
-Trampoline* LoadCharacters_t = nullptr;
+static Trampoline* LoadCharacters_t = nullptr;
 
 NJS_TEXNAME AmyEff_Tex[4]{};
 NJS_TEXLIST AmyEff_TEXLIST = { arrayptrandlength(AmyEff_Tex, Uint32) };
 
 ModelInfo* WaveMdl = nullptr;
-Trampoline* Load_Sonic_t = nullptr;
+static Trampoline* Load_Sonic_t = nullptr;
 
 static bool CheckHomingAttack(EntityData1* data, CharObj2Base* co2, SonicCharObj2* SonicCO2, EntityData2* data2)
 {

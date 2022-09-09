@@ -131,51 +131,6 @@ bool isCharaSelect() {
 	return false;
 }
 
-int IsPlayerInsideSphere(NJS_VECTOR* position, float a2)
-{
-	int player; // esi
-	EntityData1* v3; // eax
-	CollisionInfo* v4; // eax
-	float* v5; // eax
-	double v6; // st7
-	float posX; // [esp+4h] [ebp-1Ch]
-	float posY; // [esp+8h] [ebp-18h]
-	float posZ; // [esp+Ch] [ebp-14h]
-	float v11; // [esp+10h] [ebp-10h]
-	NJS_VECTOR a1; // [esp+14h] [ebp-Ch] BYREF
-
-	posX = position->x;
-	player = 0;
-	posY = position->y;
-	posZ = position->z;
-	while (1)
-	{
-		v3 = MainCharObj1[player];
-		if (v3)
-		{
-			v4 = v3->Collision;
-			if (v4)
-			{
-				v5 = (float*)&v4->CollisionArray->kind;
-				v6 = v5[2];
-				v5 += 3;
-				a1.x = v6 - posX;
-				a1.y = *v5 - posY;
-				a1.z = v5[1] - posZ;
-				v11 = njScalor(&a1) - a2;
-				if (v11 < 0.0)
-				{
-					break;
-				}
-			}
-		}
-		if (++player >= 2)
-		{
-			return 0;
-		}
-	}
-	return player + 1;
-}
 
 bool CheckControl(int id)
 {
@@ -212,9 +167,10 @@ bool isSA1Amy() {
 
 bool isAmyAttacking(char pNum) {
 
-	EntityData1* data1 = MainCharObj1[pNum];
+	auto data1 = MainCharObj1[pNum];
+	auto co2 = MainCharObj2[pNum];
 
-	if (!data1 || MainCharObj2[pNum]->CharID2 != Characters_Amy)
+	if (!data1 || !co2 || co2->CharID2 != Characters_Amy)
 		return false;
 
 	if (data1->Action >= HammerAttack) {
@@ -225,13 +181,13 @@ bool isAmyAttacking(char pNum) {
 	return false;
 }
 
-bool checkAmyColAndAttack(ObjectMaster* obj, EntityData1* data)
+bool checkAmyColAndAttack(EntityData1* data)
 {
 	if (data)
 	{
 		if (data->Collision) {
 
-			if (data->Collision->CollidingObject) {
+			if (data->Collision->CollidingObject && data->Collision->CollidingObject->Object) {
 
 				char pnum = GetPlayerNumber(data->Collision->CollidingObject->Object);
 

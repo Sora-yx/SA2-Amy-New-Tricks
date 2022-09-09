@@ -25,6 +25,6 @@ void AmySetHammerScale(CharObj2Base* a1);
 bool isSA1Amy();
 void Init_ObjectsHack();
 bool isAmyAttacking(char pNum);
-bool checkAmyColAndAttack(ObjectMaster* obj, EntityData1* data);
+bool checkAmyColAndAttack(EntityData1* data);
 
 #define STATUS_FLOOR (Status_Ground | Status_OnObjectColli)
