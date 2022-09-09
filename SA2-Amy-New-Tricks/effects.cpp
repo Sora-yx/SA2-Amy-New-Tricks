@@ -95,6 +95,9 @@ void __cdecl AmyEffectPutSpdDwnHeart(NJS_POINT3* pos)
 extern ModelInfo* WaveMdl;
 void __cdecl HammerWaveColorDisplayer(ObjectMaster* a1)
 {	
+	if (!WaveMdl)
+		return;
+
 	auto data = a1->Data1.Entity;
 
 	njSetTexture(&AmyEff_TEXLIST);

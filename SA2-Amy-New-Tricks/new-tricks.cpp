@@ -48,14 +48,14 @@ void AmySetHammerScale(CharObj2Base* a1) {
 void AmySetAttackColli(SonicCharObj2* sonicCO2, CharObj2Base* a1, EntityData1* data)
 {
 
-	NJS_VECTOR pos;
+	NJS_VECTOR pos = { 0 };
 
 	int curAnim = a1->AnimInfo.Current;
 	CollisionInfo* col = data->Collision;
 	CollisionData* ColArray = col->CollisionArray;
 	int flag1 = 1;
 	int flag2 = 1;
-	int resultFlag;
+	int resultFlag = 0;
 
 	switch (curAnim)
 	{
@@ -187,6 +187,7 @@ signed int AmyProp_Check(EntityData1* data, CharObj2Base* co2)
 		&& !(data->Status & STATUS_FLOOR) && co2->HeldObject == nullptr) 
 	{
 		timerWaveProper = 0;
+		data->Status &= ~Status_Ball;
 		data->Action = HammerProp;
 
 		if (data->Rotation.x || data->Rotation.z)
@@ -194,11 +195,12 @@ signed int AmyProp_Check(EntityData1* data, CharObj2Base* co2)
 			PConvertVector_P2G(data, &co2->Speed);
 		}
 
+
 		data->Rotation.x = GravityAngle_X;
 		data->Rotation.z = GravityAngle_Z;
 
 		//PlaySound(1279, 0, 0, 0);
-		if (co2->Speed.x > 5)
+		if (co2->Speed.x > 5.0f)
 		{
 			PlayVoice(2, 2677);
 		}
