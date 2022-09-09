@@ -2,6 +2,8 @@
 
 extern HelperFunctions HelperFunctionsGlobal;
 void ReadConfig(const char* path);
+#define TaskHook FunctionHook<void, ObjectMaster*>
+
 
 extern int bird;
 extern int bird;

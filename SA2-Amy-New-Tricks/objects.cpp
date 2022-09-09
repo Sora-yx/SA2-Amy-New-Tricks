@@ -1,77 +1,74 @@
 #include "pch.h"
 
-Trampoline* CheckBreakObject_t;
-Trampoline* Dynamite_t;
-Trampoline* DynamiteHiddenBase_t;
-Trampoline* DynamiteSandOcean_t;
-Trampoline* MetalBox_t;
-Trampoline* MetalBoxGravity_t;
-Trampoline* RoadObjMain_t = nullptr;
+
+FunctionHook<Bool, ObjectMaster*, ObjectMaster*> CheckBreakObject_t((intptr_t)CheckBreakObject);
+TaskHook Dynamite_t(Dynamite_Main);
+TaskHook DynamiteHiddenBase_t(DynamiteHiddenBase_Main);
+TaskHook DynamiteSandOcean_t(DynamiteSandOcean_Main);
+TaskHook MetalBox_t(MetalBox);
+TaskHook MetalBoxGravity_t(MetalBoxGravity);
+TaskHook RoadObjMain_t((intptr_t)0x5B0ED0);
 
 
 Bool __cdecl CheckBreakObject_r(ObjectMaster* obj, ObjectMaster* other)
 {
-	EntityData1* data = obj->Data1.Entity;
+	auto data = obj->Data1.Entity;
 
-	if (checkAmyColAndAttack(data))
+	if (data && checkAmyColAndAttack(data))
 		return 1;
 
-	FunctionPointer(Bool, original, (ObjectMaster * obj, ObjectMaster * other), CheckBreakObject_t->Target());
-	return original(obj, other);
+	return CheckBreakObject_t.Original(obj, other);
 }
 
 
 void CheckBreakDynamite(ObjectMaster* obj) {
 
-	EntityData1* data = obj->Data1.Entity;
+	auto data = obj->Data1.Entity;
 
-	if (obj) {
+	if (obj && data) {
 		if (data->Action == 0 && checkAmyColAndAttack(data)) {
 			data->Status |= 4u;
 			obj->EntityData2->gap_44[0] = 0;
 		}
 	}
 
-	ObjectFunc(origin, Dynamite_t->Target());
-	origin(obj);
+	Dynamite_t.Original(obj);
 }
 
 void CheckBreakDynamiteHiddenBase(ObjectMaster* obj) {
 
-	EntityData1* data = obj->Data1.Entity;
+	auto data = obj->Data1.Entity;
 
-	if (obj) {
+	if (obj && data) {
 		if (data->NextAction != 7 && (checkAmyColAndAttack(data))) {
 			data->Timer = 0;
 			data->NextAction = 7;
 		}
 	}
 
-	ObjectFunc(origin, DynamiteHiddenBase_t->Target());
-	origin(obj);
+	DynamiteHiddenBase_t.Original(obj);
 }
 
 void CheckBreakDynamiteSandOcean(ObjectMaster* obj) {
 
-	EntityData1* data = obj->Data1.Entity;
+	auto data = obj->Data1.Entity;
 
-	if (obj) {
+	if (obj && data) {
 		if (data->Action == 0 && (checkAmyColAndAttack(data))) {
 			data->Status |= 4u;
 			obj->EntityData2->gap_44[0] = 0;
 		}
 	}
 
-	ObjectFunc(origin, DynamiteSandOcean_t->Target());
-	origin(obj);
+	DynamiteSandOcean_t.Original(obj);
 }
 
 
 void MetalBox_r(ObjectMaster* obj) {
 
-	EntityData1* data = obj->Data1.Entity;
+	auto data = obj->Data1.Entity;
 
-	if (checkAmyColAndAttack(data) && data->NextAction < 1)
+	if (data && checkAmyColAndAttack(data) && data->NextAction < 1)
 	{
 		data->Collision->CollisionArray->push |= 0x4000u;
 		data->Timer = 1;
@@ -80,16 +77,15 @@ void MetalBox_r(ObjectMaster* obj) {
 		data->NextAction = 1;
 	}
 
-	ObjectFunc(origin, MetalBox_t->Target());
-	origin(obj);
+	MetalBox_t.Original(obj);
 }
 
 
 void MetalBoxGravity_r(ObjectMaster* obj) {
 
-	EntityData1* data = obj->Data1.Entity;
+	auto data = obj->Data1.Entity;
 
-	if (checkAmyColAndAttack(data) && data->NextAction < 1)
+	if (data && checkAmyColAndAttack(data) && data->NextAction < 1)
 	{
 		data->Collision->CollisionArray->push |= 0x4000u;
 		data->Timer = 1;
@@ -98,33 +94,28 @@ void MetalBoxGravity_r(ObjectMaster* obj) {
 		data->NextAction = 1;
 	}
 
-	ObjectFunc(origin, MetalBoxGravity_t->Target());
-	origin(obj);
+	MetalBoxGravity_t.Original(obj);
 }
 
 void RoadObjMain_r(ObjectMaster* obj)
 {
-	EntityData1* data = obj->Data1.Entity;
+	auto data = obj->Data1.Entity;
 
-	if (checkAmyColAndAttack(data) && !data->NextAction)
+	if (data && checkAmyColAndAttack(data) && !data->NextAction)
 	{
 		data->NextAction++;
 	}
 
-	ObjectFunc(origin, RoadObjMain_t->Target());
-	origin(obj);
+
+	RoadObjMain_t.Original(obj);
 }
 
 void Init_ObjectsHack() {
-	CheckBreakObject_t = new Trampoline((int)CheckBreakObject, (int)CheckBreakObject + 0x7, CheckBreakObject_r);
-	Dynamite_t = new Trampoline((int)Dynamite_Main, (int)Dynamite_Main + 0x5, CheckBreakDynamite);
-	DynamiteHiddenBase_t = new Trampoline((int)DynamiteHiddenBase_Main, (int)DynamiteHiddenBase_Main + 0x5, CheckBreakDynamiteHiddenBase);
-	DynamiteSandOcean_t = new Trampoline((int)DynamiteSandOcean_Main, (int)DynamiteSandOcean_Main + 0x6, CheckBreakDynamiteSandOcean);
-
-
-	MetalBox_t = new Trampoline((int)MetalBox, (int)MetalBox + 0x6, MetalBox_r);
-	MetalBoxGravity_t = new Trampoline((int)MetalBoxGravity, (int)MetalBoxGravity + 0x6, MetalBoxGravity_r);
-
-	RoadObjMain_t = new Trampoline((int)0x5B0ED0, (int)0x5B0ED5, RoadObjMain_r);
-
+	CheckBreakObject_t.Hook(CheckBreakObject_r);
+	Dynamite_t.Hook(CheckBreakDynamite);
+	DynamiteHiddenBase_t.Hook(CheckBreakDynamiteHiddenBase);
+	DynamiteSandOcean_t.Hook(CheckBreakDynamiteSandOcean);
+	MetalBox_t.Hook(MetalBox_r);
+	MetalBoxGravity_t.Hook(MetalBoxGravity_r);
+	RoadObjMain_t.Hook(RoadObjMain_r);
 }

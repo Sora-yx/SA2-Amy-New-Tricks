@@ -18,5 +18,6 @@
 #include "AnimationFile.h"
 #include "Sound.h"
 #include "util.h"
+#include "FunctionHook.h"
 
 #endif //PCH_H

@@ -1,16 +1,16 @@
 #include "pch.h"
 #include "abilities.h"
 
-static Trampoline* Amy_Exec_t = nullptr;
-static Trampoline* Amy_runsActions_t = nullptr;
-static Trampoline* Amy_delete_t = nullptr;
-static Trampoline* LoadCharacters_t = nullptr;
+TaskHook Amy_Exec_t(Sonic_Main);
+FunctionHook<void, EntityData1*, EntityData2*, CharObj2Base*, SonicCharObj2*> Amy_runsActions_t((intptr_t)Sonic_runsActions);
+TaskHook Amy_Delete_t(Sonic_Delete);
+FunctionHook<void> LoadCharacters_t((intptr_t)LoadCharacters);
+FunctionHook<void, int> LoadSonic_t((intptr_t)LoadSonic);
 
 NJS_TEXNAME AmyEff_Tex[4]{};
 NJS_TEXLIST AmyEff_TEXLIST = { arrayptrandlength(AmyEff_Tex, Uint32) };
 
 ModelInfo* WaveMdl = nullptr;
-static Trampoline* Load_Sonic_t = nullptr;
 
 static bool CheckHomingAttack(EntityData1* data, CharObj2Base* co2, SonicCharObj2* SonicCO2, EntityData2* data2)
 {
@@ -27,7 +27,7 @@ static bool CheckHomingAttack(EntityData1* data, CharObj2Base* co2, SonicCharObj
 			{
 				float spd = fabs(co2->SurfaceInfo.BottomSurfaceDist - data->Position.y);
 
-				if (spd <= 8.0)
+				if (spd <= 8.0f)
 				{
 					return false;
 				}
@@ -64,7 +64,7 @@ static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityDat
 
 		break;
 	case Action_Run:
-		if (co2->Speed.x > 2.0)
+		if (co2->Speed.x > 2.0f)
 		{
 			if (AmyCheckHammerJump(data, co2))
 			{
@@ -120,7 +120,7 @@ static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityDat
 
 		DoAmyHammerAttack(SonicCO2, data, co2, mwp);
 	}
-		break;
+	break;
 	case HammerAir:
 
 		if (Sonic_CheckNextAction(SonicCO2, data, mwp, co2))
@@ -155,20 +155,20 @@ static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityDat
 
 void __cdecl Amy_runsActions_r(EntityData1* data1, EntityData2* data2, CharObj2Base* co2, SonicCharObj2* SonicCO2)
 {
+
 	Amy_NewActions(SonicCO2, data1, data2, co2);
 
-	FunctionPointer(void, original, (EntityData1 * data1, EntityData2 * data2, CharObj2Base * co2, SonicCharObj2 * SonicCO2), Amy_runsActions_t->Target());
-	original(data1, data2, co2, SonicCO2);
+	return Amy_runsActions_t.Original(data1, data2, co2, SonicCO2);
 }
 
 void Amy_NewMoves_Main(ObjectMaster* tsk) {
 
 	char pnum = tsk->Data2.Character->PlayerNum;
 
-	CharObj2Base* co2 = MainCharObj2[pnum];
-	EntityData1* data = MainCharObj1[pnum];
-	EntityData2* mwp = MainCharData2[pnum];
-	SonicCharObj2* SonicCO2 = (SonicCharObj2*)tsk->Data2.Undefined;
+	auto co2 = MainCharObj2[pnum];
+	auto data = MainCharObj1[pnum];
+	auto mwp = MainCharData2[pnum];
+	auto SonicCO2 = (SonicCharObj2*)tsk->Data2.Undefined;
 
 	if (co2->CharID2 != Characters_Amy)
 		return;
@@ -204,7 +204,6 @@ void Amy_NewMoves_Main(ObjectMaster* tsk) {
 		PSetPosition(data, mwp, co2);
 		PResetPosition(data, mwp, co2);
 		break;
-
 	case HammerSpin:
 		if (curAnim == HammerSpinSetAnim || curAnim == HammerSpinAnim)
 		{
@@ -236,13 +235,12 @@ static void Amy_Exec_r(ObjectMaster* tsk)
 {
 	Amy_NewMoves_Main(tsk);
 
-	ObjectFunc(origin, Amy_Exec_t->Target());
-	origin(tsk);
+	Amy_Exec_t.Original(tsk);
 
 	char pnum = tsk->Data2.Character->PlayerNum;
-	CharObj2Base* co2 = MainCharObj2[pnum];
-	EntityData1* data = MainCharObj1[pnum];
-	SonicCharObj2* SonicCO2 = (SonicCharObj2*)tsk->Data2.Undefined;
+	auto co2 = MainCharObj2[pnum];
+	auto data = MainCharObj1[pnum];
+	auto SonicCO2 = (SonicCharObj2*)tsk->Data2.Undefined;
 
 	if (co2->CharID2 == Characters_Amy) {
 		AmySetHammerScale(co2);
@@ -265,11 +263,10 @@ void Amy_Delete_R(ObjectMaster* obj)
 		FreeTexList(&AmyEff_TEXLIST);
 	}
 
-	ObjectFunc(origin, Amy_delete_t->Target());
-	origin(obj);
+	Amy_Delete_t.Original(obj);
 }
 
-int BannedAmyLevel[6] = { LevelIDs_FinalHazard, LevelIDs_Route101280, 
+int BannedAmyLevel[6] = { LevelIDs_FinalHazard, LevelIDs_Route101280,
 LevelIDs_EggGolemE, LevelIDs_KartRace, LevelIDs_TailsVsEggman1, LevelIDs_TailsVsEggman2 };
 
 bool isLevelBanned() {
@@ -289,8 +286,7 @@ void LoadCharacter_r() {
 		CurrentCharacter = Characters_Sonic;
 	}
 
-	auto original = reinterpret_cast<decltype(LoadCharacter_r)*>(LoadCharacters_t->Target());
-	original();
+	LoadCharacters_t.Original();
 
 	for (int i = 0; i < 2; i++) {
 		if (MainCharObj2[i]) {
@@ -316,19 +312,19 @@ void LoadSonic_r(int playNum)
 		return;
 	}
 
-	FunctionPointer(void, original, (int playerNum), Load_Sonic_t->Target());
-	return original(playNum);
+	LoadSonic_t.Original(playNum);
 }
 
 void Amy_Init()
 {
-	Amy_Exec_t = new Trampoline((int)Sonic_Main, (int)Sonic_Main + 0x6, Amy_Exec_r);
-	Amy_runsActions_t = new Trampoline((int)Sonic_runsActions, (int)Sonic_runsActions + 0x8, Amy_runsActions_r);
-	Amy_delete_t = new Trampoline((int)Sonic_Delete, (int)Sonic_Delete + 0x5, Amy_Delete_R);
-	LoadCharacters_t = new Trampoline((int)LoadCharacters, (int)LoadCharacters + 0x6, LoadCharacter_r);
+	Amy_Exec_t.Hook(Amy_Exec_r);
+	Amy_runsActions_t.Hook(Amy_runsActions_r);
+	Amy_Delete_t.Hook(Amy_Delete_R);
+
+	LoadCharacters_t.Hook(LoadCharacter_r);
 
 	if (amyAdventure)
-		Load_Sonic_t = new Trampoline((int)LoadSonic, (int)LoadSonic + 0x6, LoadSonic_r);
+		LoadSonic_t.Hook(LoadSonic_r);
 
 	return;
 }
