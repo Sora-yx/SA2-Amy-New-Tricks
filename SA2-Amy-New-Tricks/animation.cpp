@@ -254,9 +254,9 @@ AnimationInfo AmyAnimationList_r[] = {
 	{ HammerJumpAnim, 395, 4, 251, 0.25f, 1.0f },
 	{ HammerJumpLoopAnim, 395, 3, 251, 0.25f, 1.0f },
 	{ HammerAttackStartAnim, 395, 4, HammerAttackAnim, 0.25f, 1.0f},
-	{ HammerAttackAnim, 395, 4, HammerSpinSetAnim, 0.25f, 1.0f },	
+	{ HammerAttackAnim, 395, 4, HammerSpinSetAnim, 0.25f, 0.8f },	
 	{ HammerAirAnim, 395, 4, 15, 0.25f, 1.0f },
-	{ HammerSpinSetAnim, 395, 3, HammerSpinAnim, 0.25f, 1.0f },
+	{ HammerSpinSetAnim, 395, 3, HammerSpinAnim, 0.25f, 0.7f },
 	{ HammerSpinAnim, 395, 3, HammerSpinAnim, 0.25f, 1.0f},
 	{ HammerJumpLoopAnim, 395, 65, 4, 1.12f, 1.0f },
 };

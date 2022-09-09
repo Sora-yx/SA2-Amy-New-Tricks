@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "abilities.h"
 
-int timerDizzy = 0;
+static int timerDizzy = 0;
 
 int AmySpinAttack_Check(CharObj2Base* co2, EntityData1* data)
 {
