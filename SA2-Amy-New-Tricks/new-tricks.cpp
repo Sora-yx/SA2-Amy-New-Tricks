@@ -88,7 +88,9 @@ void AmySetAttackColli(SonicCharObj2* sonicCO2, CharObj2Base* a1, EntityData1* d
 
 		data->Collision->CollisionArray[1].center = pos;
 
-		AmyEffectPutSpdDwnHeart(&pos);
+		if (curAnim != HammerSpinSetAnim)
+			AmyEffectPutSpdDwnHeart(&pos);
+
 		njPopMatrixEx();
 
 		break;

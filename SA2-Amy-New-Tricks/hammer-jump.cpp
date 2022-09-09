@@ -25,7 +25,7 @@ void DoAmyHammerJump(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base* 
 
 	if (co2->AnimInfo.Current == HammerJumpStartAnim && co2->AnimInfo.nframe >= 5.0f)
 	{
-		PlayCustomSoundVolume(SE_HammerAttack, 0.3f);
+		PlayCustomSoundVolume(SE_HammerAttack, 0.2f);
 		data1->Status = Status_Attack;
 		co2->Speed.y = co2->PhysData.JumpSpeed * 2.9f;
 		Do_HammerWaveHeartEffect(data1);

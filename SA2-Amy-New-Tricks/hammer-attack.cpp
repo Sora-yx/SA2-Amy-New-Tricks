@@ -22,11 +22,24 @@ signed int AmyCheckHammerAttack(EntityData1* data1, CharObj2Base* co2) {
 	return 1;
 }
 
-void DoAmyHammerAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base* co2, EntityData2* data2) {
+void amyCheckSpin(EntityData1* data1, CharObj2Base* co2)
+{
+	if (co2->AnimInfo.Current == HammerSpinSetAnim) {
 
-	if (Sonic_CheckNextAction(sonicCO2, data1, data2, co2) || ((data1->Status & STATUS_FLOOR) == 0)) {
-		return;
+		if (AmySpinAttack_Check(co2, data1))
+		{
+			return;
+		}
+		else {
+			data1->Status &= ~Status_Attack;
+			data1->Action = Action_None;
+			co2->AnimInfo.Next = 0;
+			return;
+		}
 	}
+}
+
+void DoAmyHammerAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base* co2, EntityData2* data2) {
 
 	short curAnimHammer = co2->AnimInfo.Current;
 
@@ -35,28 +48,6 @@ void DoAmyHammerAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base
 		Do_HammerWaveHeartEffect(data1);
 	}
 
-	if (co2->AnimInfo.Current != 0) {
-
-		if (co2->AnimInfo.Current == HammerSpinSetAnim) {
-
-			if (AmySpinAttack_Check(co2, data1))
-				return;
-			else {
-				data1->Status &= ~Status_Attack;
-				data1->Action = Action_None;
-				co2->AnimInfo.Next = 0;
-				return;
-			}
-		}
-		else {
-
-			if (AmyCheckHammerAttack(data1, co2))
-			{
-				return;
-			}
-		}
-	}
-
-
+	amyCheckSpin(data1, co2);
 	return;
 }

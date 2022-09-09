@@ -3,6 +3,7 @@
 NJS_TEXANIM anim_amy_heart = { 4, 4, 2, 2, 0, 0, 0xFF, 0xFF, 1, 0 };
 NJS_SPRITE sprite_amy_heart = { {0}, 1.0, 1.0, 0, &AmyEff_TEXLIST, &anim_amy_heart };
 
+//used when you wait spin
 void __cdecl AmyEffectSpdDwnHeartDisplayer(ObjectMaster* a1)
 {	 
 	auto data = a1->Data1.Entity;
@@ -111,6 +112,7 @@ void __cdecl HammerWaveColorDisplayer(ObjectMaster* a1)
 
 void AmyEffectHammerWaveColor(ObjectMaster* tp)
 {
+
 	float calcWave = 0.0f;
 	float result = 0.0f;
 
@@ -228,7 +230,7 @@ void __cdecl AmyPutHammerWave(ObjectMaster* obj)
 void __cdecl AmyEffectPutFallHeart(NJS_VECTOR heartPos, int rotX, int rotZ)
 {
 
-	NJS_VECTOR result{ 0 };
+	NJS_VECTOR result = { 0 };
 	NJS_VECTOR pos = { 0 };
 
 	njPushMatrix(_nj_unit_matrix_);

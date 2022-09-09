@@ -50,20 +50,28 @@ static bool CheckHomingAttack(EntityData1* data, CharObj2Base* co2, SonicCharObj
 	return false;
 }
 
-static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityData2* mwp, CharObj2Base* co2)
+void __cdecl Amy_runsActions_r(EntityData1* data, EntityData2* data2, CharObj2Base* co2, SonicCharObj2* SonicCO2)
 {
 	if ((!data) || co2->CharID2 != Characters_Amy || CurrentLevel == LevelIDs_ChaoWorld)
-		return;
+	{
+		return Amy_runsActions_t.Original(data, data2, co2, SonicCO2);
+	}
 
 	switch (data->Action)
 	{
 	case Action_None:
+
+		if (Sonic_CheckNextAction(SonicCO2, data, data2, co2))
+			break;
 
 		if (AmyCheckHammerAttack(data, co2))
 			return;
 
 		break;
 	case Action_Run:
+		if (Sonic_CheckNextAction(SonicCO2, data, data2, co2))
+			break;
+
 		if (co2->Speed.x > 2.0f)
 		{
 			if (AmyCheckHammerJump(data, co2))
@@ -86,12 +94,16 @@ static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityDat
 	case Action_Spring:
 	case Action_Launch:
 
+		if (Sonic_CheckNextAction(SonicCO2, data, data2, co2))
+			break;
 
 		if (AmyProp_Check(data, co2))
 			return;
 
 		break;
 	case Action_Jump:
+		if (Sonic_CheckNextAction(SonicCO2, data, data2, co2))
+			break;
 
 		if (AmyProp_Check(data, co2))
 			return;
@@ -102,8 +114,8 @@ static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityDat
 		break;
 	case Action_Fall:
 
-		if (Sonic_CheckNextAction(SonicCO2, data, mwp, co2))
-			return;
+		if (Sonic_CheckNextAction(SonicCO2, data, data2, co2))
+			break;
 
 		if (AmyProp_Check(data, co2))
 			return;
@@ -115,50 +127,49 @@ static void Amy_NewActions(SonicCharObj2* SonicCO2, EntityData1* data, EntityDat
 	case HammerAttack:
 	{
 
-		if (Sonic_CheckNextAction(SonicCO2, data, mwp, co2))
-			return;
+		if (Sonic_CheckNextAction(SonicCO2, data, data2, co2))
+			break;
 
-		DoAmyHammerAttack(SonicCO2, data, co2, mwp);
+		DoAmyHammerAttack(SonicCO2, data, co2, data2);
 	}
 	break;
 	case HammerAir:
 
-		if (Sonic_CheckNextAction(SonicCO2, data, mwp, co2))
-			return;
+		if (Sonic_CheckNextAction(SonicCO2, data, data2, co2))
+			break;
 
-		DoAmyAirAttack(SonicCO2, data, co2, mwp);
+		DoAmyAirAttack(SonicCO2, data, co2, data2);
 		break;
 	case HammerJump:
 
-		if (Sonic_CheckNextAction(SonicCO2, data, mwp, co2) || AmyProp_Check(data, co2) || CheckHomingAttack(data, co2, SonicCO2, mwp))
+		if (Sonic_CheckNextAction(SonicCO2, data, data2, co2))
+			break;
+
+		if (AmyProp_Check(data, co2) || CheckHomingAttack(data, co2, SonicCO2, data2))
 			return;
 
-		DoAmyHammerJump(SonicCO2, data, co2, mwp);
+		DoAmyHammerJump(SonicCO2, data, co2, data2);
 		break;
 	case HammerSpin:
 
-		if (Sonic_CheckNextAction(SonicCO2, data, mwp, co2))
-			return;
+		if (Sonic_CheckNextAction(SonicCO2, data, data2, co2)) {
+			FreeAllCustomSounds();
+			break;
+		}
 
-		DoAmySpinAttack(SonicCO2, data, co2, mwp);
-		AmyMovingSpin(data, mwp, co2);
+		DoAmySpinAttack(SonicCO2, data, co2, data2);
+		AmyMovingSpin(data, data2, co2);
 		break;
 	case HammerProp:
 
-		if (Sonic_CheckNextAction(SonicCO2, data, mwp, co2))
-			return;
+		if (Sonic_CheckNextAction(SonicCO2, data, data2, co2))
+			break;
 
-		AmyProp_Run(SonicCO2, data, mwp, co2);
+		AmyProp_Run(SonicCO2, data, data2, co2);
 		break;
 	}
-}
 
-void __cdecl Amy_runsActions_r(EntityData1* data1, EntityData2* data2, CharObj2Base* co2, SonicCharObj2* SonicCO2)
-{
-
-	Amy_NewActions(SonicCO2, data1, data2, co2);
-
-	return Amy_runsActions_t.Original(data1, data2, co2, SonicCO2);
+	return Amy_runsActions_t.Original(data, data2, co2, SonicCO2);
 }
 
 void Amy_NewMoves_Main(ObjectMaster* tsk) {
