@@ -15,10 +15,10 @@ signed int AmyCheckHammerAttack(EntityData1* data1, CharObj2Base* co2) {
 
 	if ((data1->Status & 0x20) != 0)
 	{
-		co2->DynColInfo->anaspdv.y = 0.0;
+		co2->DynColInfo->anaspdv.y = 0.0f;
 	}
 
-	PlayCustomSoundVolume(Voice_AmyHammerAttack, 1);
+	PlayCustomSoundVolume(Voice_AmyHammerAttack, 0.3f);
 	return 1;
 }
 
@@ -30,7 +30,7 @@ void DoAmyHammerAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base
 
 	short curAnimHammer = co2->AnimInfo.Current;
 
-	if (curAnimHammer == HammerAttackAnim && co2->AnimInfo.nframe >= 3.0 && co2->AnimInfo.nframe < 4.0)
+	if (curAnimHammer == HammerAttackAnim && co2->AnimInfo.nframe >= 3.0f && co2->AnimInfo.nframe < 4.0f)
 	{
 		Do_HammerWaveHeartEffect(data1);
 	}

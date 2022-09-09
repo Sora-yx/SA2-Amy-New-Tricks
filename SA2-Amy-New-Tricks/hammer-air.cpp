@@ -12,7 +12,7 @@ int AmyAirAttack_Check(CharObj2Base* co2, EntityData1* data)
     data->Action = HammerAir;
     co2->AnimInfo.Next = HammerAirAnim;
 
-    PlayCustomSoundVolume(Voice_AmyHammerAir, 1);
+    PlayCustomSoundVolume(Voice_AmyHammerAir, 0.3f);
 
     VibeThing(0, 15, 0, 6);
     return 1;

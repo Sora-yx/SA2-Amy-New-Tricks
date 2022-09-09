@@ -42,7 +42,7 @@ void DoAmySpinAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base* 
         {
             timerDizzy = 0;
             co2->AnimInfo.Next = HammerSpinAnim;
-            PlayCustomSoundVolume(SE_HammerSpin, 1);
+            PlayCustomSoundVolume(SE_HammerSpin, 0.3f);
         }
     }
 

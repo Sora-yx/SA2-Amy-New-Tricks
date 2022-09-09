@@ -47,7 +47,6 @@ void __cdecl AmyEffectSpdDwnHeart(ObjectMaster* a1)
 
 void __cdecl AmyEffectPutSpdDwnHeart(NJS_POINT3* pos)
 {
-
 	float v2 = 0.0f;
 	long float v3 = 0.0f;
 	float v5 = 0.0f;
@@ -127,9 +126,9 @@ void AmyEffectHammerWaveColor(ObjectMaster* tp)
 	}
 	calcWave = (data2->Velocity.x - 0.033333335f);
 	data2->Velocity.x = data2->Velocity.x - 0.033333335f;
-	if (calcWave >= 0.0)
+	if (calcWave >= 0.0f)
 	{
-		data->Scale.x = data->Scale.x + (float)0.5;
+		data->Scale.x += 0.5f;
 		result = njSin((int)(float)((float)calcWave * 32768.0f));
 		data->Scale.y = result * 3.0f;
 		data->Scale.z = data->Scale.x;
@@ -291,6 +290,6 @@ void Do_HammerWaveHeartEffect(EntityData1* data1) {
 		AmyEffectPutFallHeart(hammerWave->Data1.Entity->Position, data1->Rotation.x, data1->Rotation.z);
 	}
 
-	PlayDelayedCustomSound(SE_HammerAttack, 2, 1);
+	PlayDelayedCustomSound(SE_HammerAttack, 2, 0.3f);
 	VibeThing(0, 15, 0, 6);
 }
