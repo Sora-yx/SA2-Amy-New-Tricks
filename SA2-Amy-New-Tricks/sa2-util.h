@@ -61,3 +61,22 @@ static inline int LightDashAllowed(EntityData1* a1, CharObj2Base* a2)
 
 	return result;
 }
+
+//signed int __usercall Sonic_CheckBounceAttack@<eax>(CharObj2Base* a1@<eax>, EntityData1* a2@<ecx>, SonicCharObj2* a3)
+static const void* const SonicCBounceAttackPtr = (void*)0x725270;
+static inline int SonicCheckBounceAttack(CharObj2Base* a1, EntityData1* a2, SonicCharObj2* a3)
+{
+	int result;
+	__asm
+	{
+		push[a3]
+		mov ecx, a2
+		mov eax, [a1]
+		call SonicCBounceAttackPtr
+		mov result, eax
+		add esp, 4
+	}
+
+	return result;
+
+}

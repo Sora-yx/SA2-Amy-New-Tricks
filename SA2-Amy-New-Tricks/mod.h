@@ -6,7 +6,7 @@ void ReadConfig(const char* path);
 
 
 extern int bird;
-extern int bird;
+extern bool hammerRotFix;
 extern bool grunt;
 extern bool amyAdventure;
 

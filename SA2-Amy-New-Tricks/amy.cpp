@@ -4,8 +4,9 @@
 TaskHook Amy_Exec_t(Sonic_Main);
 FunctionHook<void, EntityData1*, EntityData2*, CharObj2Base*, SonicCharObj2*> Amy_runsActions_t((intptr_t)Sonic_runsActions);
 TaskHook Amy_Delete_t(Sonic_Delete);
-FunctionHook<void> LoadCharacters_t((intptr_t)LoadCharacters);
 FunctionHook<void, int> LoadSonic_t((intptr_t)LoadSonic);
+
+Trampoline* LoadCharacters_t = nullptr;
 
 NJS_TEXNAME AmyEff_Tex[4]{};
 NJS_TEXLIST AmyEff_TEXLIST = { arrayptrandlength(AmyEff_Tex, Uint32) };
@@ -142,7 +143,7 @@ void __cdecl Amy_runsActions_r(EntityData1* data, EntityData2* data2, CharObj2Ba
 		break;
 	case HammerJump:
 
-		if (Sonic_CheckNextAction(SonicCO2, data, data2, co2))
+		if (Sonic_CheckNextAction(SonicCO2, data, data2, co2) || SonicCheckBounceAttack(co2, data, SonicCO2))
 			break;
 
 		if (AmyProp_Check(data, co2) || CheckHomingAttack(data, co2, SonicCO2, data2))
@@ -297,7 +298,8 @@ void LoadCharacter_r() {
 		CurrentCharacter = Characters_Sonic;
 	}
 
-	LoadCharacters_t.Original();
+	auto original = reinterpret_cast<decltype(LoadCharacter_r)*>(LoadCharacters_t->Target());
+	original();
 
 	for (int i = 0; i < 2; i++) {
 		if (MainCharObj2[i]) {
@@ -332,7 +334,7 @@ void Amy_Init()
 	Amy_runsActions_t.Hook(Amy_runsActions_r);
 	Amy_Delete_t.Hook(Amy_Delete_R);
 
-	LoadCharacters_t.Hook(LoadCharacter_r);
+	LoadCharacters_t = new Trampoline((int)LoadCharacters, (int)LoadCharacters + 0x6, LoadCharacter_r);
 
 	if (amyAdventure)
 		LoadSonic_t.Hook(LoadSonic_r);

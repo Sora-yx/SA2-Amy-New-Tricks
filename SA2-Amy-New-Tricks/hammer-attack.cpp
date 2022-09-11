@@ -18,7 +18,7 @@ signed int AmyCheckHammerAttack(EntityData1* data1, CharObj2Base* co2) {
 		co2->DynColInfo->anaspdv.y = 0.0f;
 	}
 
-	PlayCustomSoundVolume(Voice_AmyHammerAttack, 0.3f);
+	PlayCustomSoundVolume(Voice_AmyHammerAttack, 0.5f);
 	return 1;
 }
 

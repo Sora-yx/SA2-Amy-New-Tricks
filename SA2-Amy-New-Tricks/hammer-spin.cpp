@@ -46,7 +46,7 @@ void DoAmySpinAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base* 
 
 		timerDizzy = 0;
 		co2->AnimInfo.Next = HammerSpinAnim;
-		PlayCustomSoundVolume(SE_HammerSpin, 0.3f);
+		PlayCustomSoundVolume(SE_HammerSpin, 0.4f);
 	}
 
 	if (curAnim == HammerSpinAnim) {
@@ -70,7 +70,7 @@ void DoAmySpinAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base* 
 			{
 				EntityData1* waveData = wave->Data1.Entity;
 				waveData->Position = data1->Position;
-				waveData->Position.y = co2->PhysData.Height * 0.5 + waveData->Position.y;
+				waveData->Position.y = co2->PhysData.Height * 0.5f + waveData->Position.y;
 				waveData->Rotation = data1->Rotation;
 				waveData->Timer = 4;
 				waveData->Index = 0;

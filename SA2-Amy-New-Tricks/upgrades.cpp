@@ -53,19 +53,19 @@ void DisplayUpgrade() {
 
 		if (curAnim == HammerSpinSetAnim) {
 
-			hammer->ang[2] = MainCharObj1[pnum]->Rotation.z + isSA1Amy() ? 0x500 : 0x4000;
+			hammer->ang[2] = MainCharObj1[pnum]->Rotation.z + hammerRotFix ? 0x500 : 0x4000;
 			hammerChild->ang[2] = hammer->ang[2];
 		}
 		else if (curAnim == HammerSpinAnim) {
 
-			hammer->ang[0] = isSA1Amy() ? 0x4000 : 0x8000;
-			hammer->ang[2] = MainCharObj1[pnum]->Rotation.z + isSA1Amy() ? 0x3000 : -0x1000;
+			hammer->ang[0] = hammerRotFix ? 0x4000 : 0x8000;
+			hammer->ang[2] = MainCharObj1[pnum]->Rotation.z + hammerRotFix ? 0x3000 : -0x1000;
 			hammerChild->ang[0] = hammer->ang[0];
 			hammerChild->ang[2] = hammer->ang[2];
 		}
 
 		else {
-			if (!isSA1Amy()) {
+			if (!hammerRotFix) {
 				hammer->ang[0] = 0;
 				hammer->ang[2] = 0;
 				hammerChild->ang[0] = 0;
@@ -90,7 +90,7 @@ void DisplayUpgrade() {
 		}
 	}
 
-	if (isSA1Amy()) {
+	if (hammerRotFix) {
 		NJS_OBJECT* warrior = CharacterModels[500].Model;
 
 		if (warrior) {
