@@ -273,6 +273,7 @@ void Amy_Delete_R(ObjectMaster* obj)
 	if (sonicCO2->base.CharID2 == Characters_Amy) {
 		FreeMDL(WaveMdl);
 		FreeTexList(&AmyEff_TEXLIST);
+		Delete_AmyAnim();
 	}
 
 	Amy_Delete_t.Original(obj);

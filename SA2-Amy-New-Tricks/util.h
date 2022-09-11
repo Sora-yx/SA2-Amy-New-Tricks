@@ -17,6 +17,7 @@ void Init_Bird();
 void Load_AmyNewAnim();
 void Init_AmyAnim();
 void SetNewAnimList(int player);
+void Delete_AmyAnim();
 signed int AmyCheckHammerAttack(EntityData1* data1, CharObj2Base* co2);
 void DoAmyHammerAttack(SonicCharObj2* sonicCO2, EntityData1* data1, CharObj2Base* co2, EntityData2* data2);
 void Upgrades_Init();
