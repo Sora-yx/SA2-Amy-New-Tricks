@@ -14,7 +14,6 @@ void ReadConfig(const char* path) {
 	amyAdventure = config->getBool("General", "amyAdventure", false);
 
 	const auto physics = new IniFile(std::string(path) + "\\physics.ini");
-
 	Amy_AbilitiesConfig(config, physics);
 
 	delete config;

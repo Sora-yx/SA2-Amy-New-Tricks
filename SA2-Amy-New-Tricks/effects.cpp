@@ -6,8 +6,10 @@ NJS_SPRITE sprite_amy_heart = { {0}, 1.0, 1.0, 0, &AmyEff_TEXLIST, &anim_amy_hea
 //used when you wait spin
 void __cdecl AmyEffectSpdDwnHeartDisplayer(ObjectMaster* a1)
 {	 
+
 	auto data = a1->Data1.Entity;
 	auto data2 = a1->Data2.Entity;
+	char pnum = data2->SpeedAngle.x;
 
 	njSetTexture(&AmyEff_TEXLIST);
 	float r = 0.25f - (data2->Velocity.x - 0.5f) * (data2->Velocity.x - 0.5f) + 0.25f
@@ -46,7 +48,7 @@ void __cdecl AmyEffectSpdDwnHeart(ObjectMaster* a1)
 	}
 }
 
-void __cdecl AmyEffectPutSpdDwnHeart(NJS_POINT3* pos)
+void __cdecl AmyEffectPutSpdDwnHeart(NJS_POINT3* pos, char pnum)
 {
 	float v2 = 0.0f;
 	long float v3 = 0.0f;
@@ -87,6 +89,7 @@ void __cdecl AmyEffectPutSpdDwnHeart(NJS_POINT3* pos)
 		data->Scale.x = v2 * 0.25f;
 		data->Scale.y = result.y * 0.25f;
 		data->Scale.z = result.z * 0.25f;
+		HeartObj->Data2.Entity->SpeedAngle.x = pnum;
 		HeartObj->DisplaySub_Delayed2 = AmyEffectSpdDwnHeartDisplayer;
 		data->Position = *pos;
 	}

@@ -106,7 +106,6 @@ void RoadObjMain_r(ObjectMaster* obj)
 		data->NextAction++;
 	}
 
-
 	RoadObjMain_t.Original(obj);
 }
 

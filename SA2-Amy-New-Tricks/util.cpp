@@ -189,11 +189,13 @@ bool checkAmyColAndAttack(EntityData1* data)
 
 			if (data->Collision->CollidingObject && data->Collision->CollidingObject->Object) {
 
-				char pnum = GetPlayerNumber(data->Collision->CollidingObject->Object);
+				int pnum = GetPlayerNumber(data->Collision->CollidingObject->Object);
 
-				if (isAmyAttacking(pnum))
-				{
-					return true;
+				if (pnum >= 0) {
+					if (isAmyAttacking(pnum))
+					{
+						return true;
+					}
 				}
 			}
 		}

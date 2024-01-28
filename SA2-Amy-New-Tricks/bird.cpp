@@ -44,9 +44,6 @@ void __cdecl AmyBird_Main(ObjectMaster* obj) {
 		return;
 	}
 
-	float posx = data->Position.x;
-	float posy = data->Position.y;
-	float posz = data->Position.z;
 
 	data->Rotation.y = BAMS_SubWrap(data->Rotation.y, 0x8000 - player->Rotation.y, 1024);
 	data->Rotation.x += 16;
